@@ -1,0 +1,70 @@
+html {
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+}
+
+body {
+  padding: 1rem;
+}
+
+div.container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  div.container {
+    max-width: 760px;
+  }
+}
+
+@media (min-width: 992px) {
+  div.container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  div.container {
+    max-width: 1140px;
+  }
+}
+
+/*
+@media (min-width: 1400px) {
+  div.container {
+    max-width: 1320px;
+  }
+}
+*/
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+#title {
+  text-align: center;
+}
+
+#title h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+}
+
+#title h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+#title h3 {
+  margin-top: 0.5rem;
+  color: #666;
+}

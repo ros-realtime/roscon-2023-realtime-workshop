@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ROScon 2023 real-time workshop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/pure-min.css">
+    <link rel="stylesheet" type="text/css" href="css/grids-responsive-min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="pure-g">
+        <div class="pure-u-1" id="title">
+          <h1>Real-time programming with ROS 2</h1>
+          <h2>
+            ROScon 2023
+          </h2>
+          <h3>
+            Shuhao Wu, Jan Staschulat
+          </h3>
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1">
+          <p class="text-justify">
+            Welcome to the informational website for the full-day (8:00 -
+            17:00) workshop, <em>Real-time programming with ROS 2</em>
+            scheduled to be held at ROScon 2023 on <strong>October 18th,
+            2023</strong>. Detailed agenda, ahead-of-time instructions, and
+            additional resources will be posted here in the coming months.
+          </p>
+
+          <p class="text-center text-underline">
+            Last updated: July 7th 2023
+          </p>
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1">
+          <h2 class="text-center">Program description and goals</h2>
+          <p class="text-justify">
+            Ensuring the worst-case execution time of software to remain within
+            a known bound is challenging, especially given the complexity of
+            modern software and hardware stacks. This workshop aims to teach
+            robotics engineers the basics of real-time programming and how this
+            can be accomplished with ROS 2. The audience should walk out of the
+            workshop with a good grasp of how to approach real-time programs
+            and some hands-on experience with programming real-time
+            applications both in and out of the ROS context.
+          </p>
+
+          <p class="text-justify">
+            The workshop is divided into a morning session and an afternoon
+            session. In the morning, the main goal is to introduce the audience
+            to the foundation of real-time programming without ROS. In the
+            afternoon, the main goal is to apply the knowledge to ROS 2 and
+            learn about the concepts and limitations of the execution
+            management of ROS 2 Humble. We intend to both present an
+            experimental, out-of-tree real-time ROS 2 executor that can be used
+            for real-time applications as well as present best practices for
+            achieving real-time behaviors within mainline ROS 2 executors.
+            Finally, we intend to hold a panel discussion about the open
+            challenges for enabling real-time within ROS 2.
+          </p>
+
+          <p class="text-justify">
+            The workshop will cover two typical use-cases over a number of
+            hands-on exercises. In the morning, we will present an inverted
+            pendulum controller demo. This allows us to cover the use case of
+            1000 Hz real-time control-loop with a single ROS 2 node. In the
+            afternoon, we will present a simulated camera safety system
+            constructed with multiple ROS 2 nodes. This allows us to cover the
+            use case of 60 Hz real-time within a larger ROS 2 network. All demo
+            code will be made available during the workshop.
+          </p>
+
+          <p class="text-justify">
+            We intend for the workshop to have the following impact on the ROS
+            community: (1) transfer knowledge to robotics engineers about
+            real-time system concepts and ROS 2 execution management; (2)
+            enable robotics engineers to build real-time applications with ROS
+            2; and (3) spread the knowledge of real-time ROS 2 in the community
+            such that its development can be further accelerated.
+          </p>
+
+          <p class="text-center text-underline">
+            <a href="https://roscon.ros.org/2023/">Interested? Sign up on the ROScon 2023 website</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="pure">
+        <div class="pure-u-1 text-center">
+          <h2>Requirements for the workshop exercises</h2>
+
+          <p class="text-justify">
+            The workshop exercises are designed for groups of 3 to 5 people. We
+            will run all exercises on laptops running Ubuntu 22.04 and ROS 2
+            Humble as well as Raspberry Pi 4s. Each group should have at least
+            one laptop and one Raspberry Pi 4. Due to cost and logistical
+            challenges, we cannot provide these equipment to all attendees and
+            attendees must bring their own equipment, or join a group with the
+            required equipments. Ahead of the workshop, we will ask attendees
+            who intend to bring their own Raspberry Pi 4s to flash a special
+            workshop-specific image onto the SD cards. This will be
+            communicated at a later time.
+          </p>
+
+          <p class="text-justify">
+            Since not everyone will have a Raspberry Pi 4, please note that if
+            you intend to bring your own, you may be asked to form groups with
+            2 to 4 other people who may not have Raspberry Pi 4s and
+            collaborate with them during the exercises.
+          </p>
+
+          <div style="border: 1px solid #333; background: #CCC;">
+            <p style="font-size: 1.1rem;" class="text-underline">
+              You should bring:
+            </p>
+
+            <p>
+              <em>
+                A laptop running <strong>Ubuntu 22.04</strong> with <strong>ROS 2 Humble</strong> installed.
+              </em>
+              <br>
+              <span style="color: #555; font-size: 0.85rem;">
+                This should be a direct installation and not a virtual machine.
+              </span>
+            </p>
+
+            <p style="font-size: 1.1rem;" class="text-underline">
+              If possible, we <strong>strongly encourage</strong> you to bring:
+            </p>
+
+            <p>
+              <em>
+                A <strong>Raspberry Pi 4</strong> and its associated power supply and microSD cards.
+                <br>
+                We also recommend an Ethernet cable to connect the Pi 4 to your laptop.
+              </em>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1">
+          <h2 class="text-center">Detailed agenda</h2>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-2">
+          <h3 class="text-center">Morning</h3>
+          <p class="text-center">Coming soon...</p>
+        </div>
+        <div class="pure-u-1 pure-u-lg-1-2">
+          <h3 class="text-center">Afternoon</h3>
+          <p class="text-center">Coming soon...</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
