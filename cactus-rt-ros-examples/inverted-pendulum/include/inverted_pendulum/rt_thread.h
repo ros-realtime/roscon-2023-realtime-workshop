@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "data_logger_thread.h"
+#include "inverted_pendulum/data_logger_thread.h"
 
 using cactus_rt::CyclicThread;
 using cactus_rt::schedulers::Fifo;

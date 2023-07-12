@@ -1,4 +1,4 @@
-#include "rt_thread.h"
+#include "inverted_pendulum/rt_thread.h"
 
 double RtThread::ReadSensor(int64_t cycle_time)
 {

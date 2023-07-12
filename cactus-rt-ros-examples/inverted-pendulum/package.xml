@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+    <name>inverted_pendulum_example</name>
+    <version>0.0.1</version>
+    <description>An inverted pendulum example</description>
+
+    <maintainer email="stephanie@stephanieeng.ca">Stephanie Eng</maintainer>
+    <author email="stephanie@stephanieeng.ca">Stephanie Eng</author>
+
+    <license>TBD</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <depend>rclcpp</depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>

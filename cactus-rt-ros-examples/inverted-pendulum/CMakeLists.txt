@@ -4,6 +4,7 @@ project(inverted_pendulum_example)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# CactusRT
 include(FetchContent)
 FetchContent_Declare(
   cactus_rt
@@ -12,14 +13,34 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cactus_rt)
 
-add_executable(${PROJECT_NAME}
-  main.cc
-  data_logger_thread.cc
-  rt_thread.cc
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+  ament_cmake
+  rclcpp
+  tf2
+  tf2_ros
 )
 
+foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
+###########
+## Build ##
+###########
+
+add_executable(${PROJECT_NAME}
+  src/main.cc
+  src/data_logger_thread.cc
+  src/rt_thread.cc
+)
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+           $<INSTALL_INTERFACE:include>)
+
 target_link_libraries(${PROJECT_NAME}
-  PRIVATE
+# TODO: >  
+# PRIVATE
   cactus_rt
 )
 
@@ -54,3 +75,20 @@ target_compile_features(${PROJECT_NAME}
   cxx_std_17
 )
 
+ament_target_dependencies(${PROJECT_NAME} ${THIS_PACKAGE_INCLUDE_DEPENDS})
+
+#############
+## Install ##
+#############
+
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Targets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
+ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
+ament_package()
