@@ -68,3 +68,16 @@ div.container {
   margin-top: 0.5rem;
   color: #666;
 }
+
+.schedule-item {
+  margin-bottom: 1rem;
+}
+
+.schedule-item h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.schedule-item p {
+  margin-top: 0;
+}
