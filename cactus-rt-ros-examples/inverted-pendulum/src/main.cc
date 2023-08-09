@@ -8,7 +8,11 @@ using cactus_rt::App;
 int main()
 {
   auto data_logger = std::make_shared<DataLogger>("build/data.csv");
-  auto rt_thread = std::make_shared<RtThread>(data_logger, 1'000'000);
+
+  cactus_rt::CyclicThreadConfig rt_thread_config;
+  rt_thread_config.period_ns =  1'000'000;
+  rt_thread_config.SetFifoScheduler(80);
+  auto rt_thread = std::make_shared<RtThread>(data_logger, rt_thread_config);
 
   App app;
   app.RegisterThread(data_logger);
