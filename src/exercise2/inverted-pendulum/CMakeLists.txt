@@ -16,6 +16,7 @@ FetchContent_MakeAvailable(cactus_rt)
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
   rclcpp
+  sensor_msgs
   tf2
   tf2_ros
 )
