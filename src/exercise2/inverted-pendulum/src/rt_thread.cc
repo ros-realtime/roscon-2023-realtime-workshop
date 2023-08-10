@@ -68,7 +68,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept
   const double output = GetCommand(current_position, 0, cycle_time_ns);
   WriteCommand(output);
 
-  data_logger_->EmplaceData(ellapsed_ms, current_position);
+  ros_node_->EmplaceData(ellapsed_ms, current_position);
 
   ++iterations_;
   return iterations_ >= max_iterations_;

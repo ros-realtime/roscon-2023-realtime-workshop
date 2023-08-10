@@ -1,34 +1,34 @@
 // Cactus RT
 #include <cactus_rt/rt.h>
 
-// ROS
-#include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/joint_state.hpp>
-
-#include "inverted_pendulum/data_logger_thread.h"
+#include "inverted_pendulum/ros_pendulum_node.h"
 #include "inverted_pendulum/rt_thread.h"
 
 using cactus_rt::App;
 
-int main() {
-  rclcpp::Node nh("pendulum_node");
-  nh.create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
+int main(int argc, char* argv[]) {
+  rclcpp::init(argc, argv);
 
-  auto data_logger = std::make_shared<DataLogger>("build/data.csv");
+  auto node = std::make_shared<RosPendulumNode>("pendulum_node");
 
   cactus_rt::CyclicThreadConfig rt_thread_config;
   rt_thread_config.period_ns = 1'000'000;
   rt_thread_config.SetFifoScheduler(80);
-  auto rt_thread = std::make_shared<RtThread>(data_logger, rt_thread_config);
+  auto rt_thread = std::make_shared<RtThread>(node, rt_thread_config);
 
   App app;
-  app.RegisterThread(data_logger);
   app.RegisterThread(rt_thread);
 
   app.Start();
-  rt_thread->Join();           // This thread will terminate on its own.
-  data_logger->RequestStop();  // Stop the data logger after
-  data_logger->Join();         // Wait for it to quit and flush everything.
+
+  auto ros_thread = std::thread(
+    [&]() {
+      rclcpp::spin(node);
+    }
+  );
+
+  rt_thread->Join();  // This thread will terminate on its own.
+  ros_thread.join();
 
   return 0;
 }

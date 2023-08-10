@@ -2,6 +2,8 @@
 cmake_minimum_required(VERSION 3.18)
 project(inverted_pendulum_example)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # CactusRT
@@ -31,7 +33,7 @@ endforeach()
 
 add_executable(${PROJECT_NAME}
   src/main.cc
-  src/data_logger_thread.cc
+  src/ros_pendulum_node.cc
   src/rt_thread.cc
 )
 
@@ -89,6 +91,8 @@ install(
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})

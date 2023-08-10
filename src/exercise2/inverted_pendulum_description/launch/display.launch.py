@@ -14,32 +14,22 @@ def generate_launch_description():
 
     robot_description = {"robot_description": urdf}
 
-    # RViz
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        output="log",
-        parameters=[
-            robot_description,
-        ],
-    )
-
-    joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        output='screen',
-        parameters=[robot_description])
-
     # Static TF
     static_tf_node = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "map", "base_link"],
     )
+
+
+    joint_state_publisher_node = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher",
+        name="joint_state_publisher"
+    )
+
 
     # Publish TF
     robot_state_publisher = Node(
@@ -52,6 +42,7 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            # joint_state_publisher_node,
             static_tf_node,
             robot_state_publisher,
         ]
