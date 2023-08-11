@@ -19,6 +19,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
   rclcpp
   sensor_msgs
+  std_srvs
   tf2
   tf2_ros
 )

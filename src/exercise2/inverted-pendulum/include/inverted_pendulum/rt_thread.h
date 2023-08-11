@@ -5,18 +5,18 @@
 
 #include <memory>
 
-#include "inverted_pendulum/ros_pendulum_node.h"
+#include "inverted_pendulum/shared_data.h"
 
 using cactus_rt::CyclicThread;
 
 class RtThread : public CyclicThread {
-  std::shared_ptr<RosPendulumNode> ros_node_;
-  size_t                           max_iterations_;
-  size_t                           iterations_ = 0;
-  int64_t                          prev_ns_ = 0;
+  std::shared_ptr<SharedData> queue_;
+  size_t                      max_iterations_;
+  size_t                      iterations_ = 0;
+  int64_t                     prev_ns_ = 0;
 
   // Pendulum properties
-  const double initial_position_ = 0.3;  // Initial position of the pendulum in rad, 0 indicates top
+  const double initial_position_ = 0.6;  // Initial position of the pendulum in rad, 0 indicates top
   const double length_ = 0.5;            // Length of the pendulum in meters
   double       current_position_;
   double       current_velocity_ = 0;  // Assume the pendulum starts from stationary
@@ -34,9 +34,9 @@ class RtThread : public CyclicThread {
   void   WriteCommand(const double output);
 
  public:
-  RtThread(std::shared_ptr<RosPendulumNode> ros_process, cactus_rt::CyclicThreadConfig config, size_t max_iterations = 30000)
+  RtThread(std::shared_ptr<SharedData> shared_data, cactus_rt::CyclicThreadConfig config, size_t max_iterations = 30000)
       : CyclicThread("RtThread", config),
-        ros_node_(ros_process),
+        queue_(shared_data),
         max_iterations_(max_iterations) {
   }
 

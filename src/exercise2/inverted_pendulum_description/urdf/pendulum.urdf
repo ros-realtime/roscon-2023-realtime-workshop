@@ -27,7 +27,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="base_link"/>
     <child link="link_1"/>
-    <axis xyz="0 0 1"/>
+    <axis xyz="1 0 0"/>
     <limit effort="0" lower="-6.28" upper="6.28" velocity="10.47"/>
   </joint>
   <joint name="joint_2" type="fixed">

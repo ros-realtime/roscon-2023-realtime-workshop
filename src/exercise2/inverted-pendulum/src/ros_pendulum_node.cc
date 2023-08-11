@@ -3,42 +3,30 @@
 
 #include <chrono>
 #include <functional>
-
 using namespace std::chrono_literals;
+using namespace std::placeholders;
 
-RosPendulumNode::RosPendulumNode(const std::string& name)
-    : rclcpp::Node(name) {
+RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<SharedData> queue)
+    : rclcpp::Node(name), queue_(queue) {
   joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
   timer_ = this->create_wall_timer(10ms, std::bind(&RosPendulumNode::TimerCallback, this));
+  reset_service_ = this->create_service<std_srvs::srv::Empty>("reset_pendulum", std::bind(&RosPendulumNode::ResetPendulum, this, _1, _2));
 }
 
 void RosPendulumNode::TimerCallback() {
-  sensor_msgs::msg::JointState joint_state_msg;
-  joint_state_msg.header.stamp = this->get_clock()->now();
-  ;
-  joint_state_msg.name.push_back("joint_1");
-  joint_state_msg.position.push_back(0.0);
-  joint_state_publisher_->publish(joint_state_msg);
-}
+  OutputData data;
 
-bool RosPendulumNode::EmplaceData(double timestamp, double output_value) noexcept {
-  // should always use the try_* method in the hot path, as these do not allocate
-  const bool success = queue_.try_emplace(timestamp, output_value);
-  if (success) {
-    IncrementMessageCount(1);
-  } else {
-    IncrementMessageCount(0);
+  while (true) {
+    if (queue_->try_dequeue(data)) {
+      sensor_msgs::msg::JointState joint_state_msg;
+      // joint_state_msg.header.stamp = this->get_clock()->now();
+      joint_state_msg.header.stamp.sec = data.timestamp.tv_sec;
+      joint_state_msg.header.stamp.nanosec = data.timestamp.tv_nsec;
+      joint_state_msg.name.push_back("joint_1");
+      joint_state_msg.position.push_back(data.output_value);
+      joint_state_publisher_->publish(joint_state_msg);
+    } else {
+      break;
+    }
   }
-  return success;
-}
-
-void RosPendulumNode::IncrementMessageCount(uint32_t successful_message_count) noexcept {
-  auto                old_count = message_count_.load();
-  decltype(old_count) new_count;
-
-  do {
-    new_count = old_count;
-    new_count.successful_messages += successful_message_count;
-    new_count.total_messages += 1;
-  } while (!message_count_.compare_exchange_weak(old_count, new_count));
 }
