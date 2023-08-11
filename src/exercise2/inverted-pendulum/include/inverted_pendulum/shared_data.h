@@ -19,6 +19,8 @@ struct OutputData {
   OutputData(struct timespec t, double o) : timestamp(t), output_value(o) {}
 };
 
+// TODO don't inherit from queue
+// TODO rename to shared context
 class SharedData : public ReaderWriterQueue<OutputData> {
   using CountData = struct {
     uint32_t successful_messages;
@@ -30,7 +32,7 @@ class SharedData : public ReaderWriterQueue<OutputData> {
   static_assert(AtomicMessageCount::is_always_lock_free);
 
  public:
-  SharedData() : ReaderWriterQueue<OutputData>(){};
+  SharedData() : ReaderWriterQueue<OutputData>(8'192){};
   std::atomic<bool> reset = false;
 
   /**

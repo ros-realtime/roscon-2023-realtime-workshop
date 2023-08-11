@@ -13,6 +13,8 @@ RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<
   reset_service_ = this->create_service<std_srvs::srv::Empty>("reset_pendulum", std::bind(&RosPendulumNode::ResetPendulum, this, _1, _2));
 }
 
+// TODO subsample messages to not overload RViz
+// Also consider outputting all messages to a new topic for bag purposes
 void RosPendulumNode::TimerCallback() {
   OutputData data;
 

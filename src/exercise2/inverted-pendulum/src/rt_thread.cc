@@ -1,5 +1,6 @@
 #include "inverted_pendulum/rt_thread.h"
-
+// TODO add tracing
+// TODO remove data logger thread
 double RtThread::ReadSensor(int64_t cycle_time) {
   const double dt = static_cast<double>(cycle_time) / 1E9;
 
@@ -71,6 +72,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
 
   queue_->EmplaceData(ts, current_position);
 
-  ++iterations_;
-  return iterations_ >= max_iterations_;
+  ++iterations_;  // TODO: remove
+  // Loop forever
+  return false;
 }
