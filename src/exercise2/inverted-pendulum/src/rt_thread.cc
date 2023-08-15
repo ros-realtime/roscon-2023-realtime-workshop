@@ -1,6 +1,5 @@
 #include "inverted_pendulum/rt_thread.h"
 // TODO add tracing
-// TODO remove data logger thread
 double RtThread::ReadSensor(int64_t cycle_time) {
   const double dt = static_cast<double>(cycle_time) / 1E9;
 
@@ -22,7 +21,6 @@ double RtThread::ReadSensor(int64_t cycle_time) {
     current_velocity_ = -0.4 * current_velocity_;  // Bounce!
   }
 
-  // TODO: add sensor noise
   return current_position_;
 }
 
@@ -42,6 +40,7 @@ double RtThread::GetCommand(const double current_position, const double desired_
   prev_error_ = error;
 
   // Divide by dt to get the output as a velocity
+  // Apply velocity limits with clamp
   double velocity_command = std::clamp(position_command / dt, -M_PI_4, M_PI_4);
 
   return velocity_command;
@@ -59,9 +58,10 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
   const int64_t cycle_time_ns = ellapsed_ns - prev_ns_;
   prev_ns_ = ellapsed_ns;
 
-  if (queue_->reset) {
+  if (shared_context_->reset) {
     current_position_ = initial_position_;
-    queue_->reset = false;
+    current_velocity_ = 0;
+    shared_context_->reset = false;
   }
   const double current_position = ReadSensor(cycle_time_ns);
   const double output = GetCommand(current_position, 0, cycle_time_ns);
@@ -70,9 +70,8 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
   struct timespec ts;
   clock_gettime(CLOCK_REALTIME, &ts);
 
-  queue_->EmplaceData(ts, current_position);
+  shared_context_->EmplaceData(ts, current_position);
 
-  ++iterations_;  // TODO: remove
   // Loop forever
   return false;
 }

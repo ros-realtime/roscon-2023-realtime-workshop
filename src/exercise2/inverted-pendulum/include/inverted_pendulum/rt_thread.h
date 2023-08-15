@@ -5,15 +5,13 @@
 
 #include <memory>
 
-#include "inverted_pendulum/shared_data.h"
+#include "inverted_pendulum/shared_context.h"
 
 using cactus_rt::CyclicThread;
 
 class RtThread : public CyclicThread {
-  std::shared_ptr<SharedData> queue_;
-  size_t                      max_iterations_;
-  size_t                      iterations_ = 0;
-  int64_t                     prev_ns_ = 0;
+  std::shared_ptr<SharedContext> shared_context_;
+  int64_t                        prev_ns_ = 0;
 
   // Pendulum properties
   const double initial_position_ = 0.6;  // Initial position of the pendulum in rad, 0 indicates top
@@ -34,10 +32,9 @@ class RtThread : public CyclicThread {
   void   WriteCommand(const double output);
 
  public:
-  RtThread(std::shared_ptr<SharedData> shared_data, cactus_rt::CyclicThreadConfig config, size_t max_iterations = 30000)
+  RtThread(std::shared_ptr<SharedContext> shared_context, cactus_rt::CyclicThreadConfig config)
       : CyclicThread("RtThread", config),
-        queue_(shared_data),
-        max_iterations_(max_iterations) {
+        shared_context_(shared_context) {
   }
 
  protected:
