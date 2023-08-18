@@ -1,10 +1,10 @@
 #include "inverted_pendulum/rt_thread.h"
-// TODO add tracing
+
 double RtThread::ReadSensor(int64_t cycle_time) {
+  auto         span = Tracer().WithSpan("ReadSensor", "app");
   const double dt = static_cast<double>(cycle_time) / 1E9;
 
   const double g = 9.81;  // m / s^2
-  // const double g = 0;
 
   // Calculate anglular acceleration
   double alpha = g / length_ * sin(current_position_);
@@ -25,6 +25,7 @@ double RtThread::ReadSensor(int64_t cycle_time) {
 }
 
 double RtThread::GetCommand(const double current_position, const double desired_position, int64_t cycle_time) {
+  auto         span = Tracer().WithSpan("GetCommand", "app");
   const double dt = static_cast<double>(cycle_time) / 1E9;
 
   // Calculate error between desired and current position
@@ -47,6 +48,7 @@ double RtThread::GetCommand(const double current_position, const double desired_
 }
 
 void RtThread::WriteCommand(const double output) {
+  auto span = Tracer().WithSpan("writeCommand", "app");
   velocity_command_ = output;
 }
 
@@ -67,10 +69,14 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
   const double output = GetCommand(current_position, 0, cycle_time_ns);
   WriteCommand(output);
 
+  auto span = Tracer().WithSpan("UpdateSharedContext", "app");
+
   struct timespec ts;
   clock_gettime(CLOCK_REALTIME, &ts);
 
   shared_context_->EmplaceData(ts, current_position);
+
+  LOG_INFO_LIMIT(std::chrono::milliseconds{100}, Logger(), "Controller output {}", output);
 
   // Loop forever
   return false;

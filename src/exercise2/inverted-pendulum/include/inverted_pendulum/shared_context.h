@@ -32,8 +32,8 @@ class SharedContext {
  public:
   SharedContext(){};
 
-  std::atomic<bool>             reset = false;
-  ReaderWriterQueue<OutputData> queue = ReaderWriterQueue<OutputData>(8'192);
+  // Used to reset the pendulum to its initial position and velocity
+  std::atomic<bool> reset = false;
 
   /**
    * This method should only be called by one consumer (thread). It pushes data
@@ -41,7 +41,8 @@ class SharedContext {
    */
   bool EmplaceData(struct timespec timestamp, double output_value) noexcept {
     // should always use the try_* method in the hot path, as these do not allocate
-    const bool success = queue.try_emplace(timestamp, output_value);
+    const bool success = queue_.try_emplace(timestamp, output_value);
+
     if (success) {
       IncrementMessageCount(1);
     } else {
@@ -50,7 +51,13 @@ class SharedContext {
     return success;
   }
 
+  bool PopData(OutputData& data) {
+    return queue_.try_dequeue(data);
+  }
+
  private:
+  ReaderWriterQueue<OutputData> queue_ = ReaderWriterQueue<OutputData>(8'192);
+
   void IncrementMessageCount(uint32_t successful_message_count) noexcept {
     auto                old_count = message_count_.load();
     decltype(old_count) new_count;

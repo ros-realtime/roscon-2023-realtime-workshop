@@ -14,7 +14,7 @@ RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<
       shared_context_(shared_context),
       last_msg_sent_time_(0),
       decimated_msg_period_ns_(10'000'000) {
-  full_joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states_2", 10);
+  full_joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states_full", 10);
   decimated_joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
   timer_ = this->create_wall_timer(10ms, std::bind(&RosPendulumNode::TimerCallback, this));
   reset_service_ = this->create_service<std_srvs::srv::Empty>("reset_pendulum", std::bind(&RosPendulumNode::ResetPendulum, this, _1, _2));
@@ -26,11 +26,11 @@ void RosPendulumNode::TimerCallback() {
   // Empty the queue of all data
   while (true) {
     // Check if there is data in the queue
-    if (shared_context_->queue.try_dequeue(data)) {
+    if (shared_context_->PopData(data)) {
       // Construct a joint_state message for the pendulum position
       sensor_msgs::msg::JointState joint_state_msg;
-      joint_state_msg.header.stamp.sec = data.timestamp.tv_sec;
-      joint_state_msg.header.stamp.nanosec = data.timestamp.tv_nsec;
+      joint_state_msg.header.stamp.sec = static_cast<int32_t>(data.timestamp.tv_sec);
+      joint_state_msg.header.stamp.nanosec = static_cast<int32_t>(data.timestamp.tv_nsec);
       joint_state_msg.name.push_back("joint_1");
       joint_state_msg.position.push_back(data.output_value);
       full_joint_state_publisher_->publish(joint_state_msg);

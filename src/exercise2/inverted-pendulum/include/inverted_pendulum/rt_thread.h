@@ -10,6 +10,7 @@
 using cactus_rt::CyclicThread;
 
 class RtThread : public CyclicThread {
+  // Shared context used to pass data to and from the ROS thread
   std::shared_ptr<SharedContext> shared_context_;
   int64_t                        prev_ns_ = 0;
 
@@ -27,9 +28,14 @@ class RtThread : public CyclicThread {
   double       error_sum_ = 0;
   double       prev_error_ = 0;
 
+  // "Read" the sensor for pendulum angle by simulating it
   double ReadSensor(int64_t ellapsed_ns);
+
+  // Get the velocity command for the motor with a PID controller
   double GetCommand(const double current_position, const double desired_position, int64_t ellapsed_ns);
-  void   WriteCommand(const double output);
+
+  // Write the output of the PID to the robot
+  void WriteCommand(const double output);
 
  public:
   RtThread(std::shared_ptr<SharedContext> shared_context, cactus_rt::CyclicThreadConfig config)

@@ -36,6 +36,7 @@ int main(int argc, char* argv[]) {
   App app;
   app.RegisterThread(rt_thread);
 
+  app.StartTraceSession("inverted_pendulum.perfetto");
   app.Start();
 
   // We handle the termination signals and clean up before rclcpp::shutdown
