@@ -7,11 +7,12 @@
     <maintainer email="stephanie@stephanieeng.ca">Stephanie Eng</maintainer>
     <author email="stephanie@stephanieeng.ca">Stephanie Eng</author>
 
-    <license>TBD</license>
+    <license>Apache-2.0</license>
 
     <buildtool_depend>ament_cmake</buildtool_depend>
 
     <depend>rclcpp</depend>
+    <depend>inverted_pendulum_interfaces</depend>
 
     <export>
         <build_type>ament_cmake</build_type>

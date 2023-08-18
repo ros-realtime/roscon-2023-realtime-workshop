@@ -17,7 +17,15 @@ RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<
   full_joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states_full", 10);
   decimated_joint_state_publisher_ = this->create_publisher<sensor_msgs::msg::JointState>("/joint_states", 10);
   timer_ = this->create_wall_timer(10ms, std::bind(&RosPendulumNode::TimerCallback, this));
-  reset_service_ = this->create_service<std_srvs::srv::Empty>("reset_pendulum", std::bind(&RosPendulumNode::ResetPendulum, this, _1, _2));
+  reset_service_ = this->create_service<std_srvs::srv::Empty>(
+    "reset_pendulum", std::bind(&RosPendulumNode::ResetPendulum, this, _1, _2)
+  );
+  set_desired_position_service_ = this->create_service<inverted_pendulum_interfaces::srv::SetDesiredPosition>(
+    "set_desired_position", std::bind(&RosPendulumNode::SetDesiredPosition, this, _1, _2)
+  );
+  set_PID_constants_service_ = this->create_service<inverted_pendulum_interfaces::srv::SetPIDConstants>(
+    "set_PID_constants", std::bind(&RosPendulumNode::SetPIDConstants, this, _1, _2)
+  );
 }
 
 void RosPendulumNode::TimerCallback() {
@@ -30,7 +38,7 @@ void RosPendulumNode::TimerCallback() {
       // Construct a joint_state message for the pendulum position
       sensor_msgs::msg::JointState joint_state_msg;
       joint_state_msg.header.stamp.sec = static_cast<int32_t>(data.timestamp.tv_sec);
-      joint_state_msg.header.stamp.nanosec = static_cast<int32_t>(data.timestamp.tv_nsec);
+      joint_state_msg.header.stamp.nanosec = static_cast<uint32_t>(data.timestamp.tv_nsec);
       joint_state_msg.name.push_back("joint_1");
       joint_state_msg.position.push_back(data.output_value);
       full_joint_state_publisher_->publish(joint_state_msg);

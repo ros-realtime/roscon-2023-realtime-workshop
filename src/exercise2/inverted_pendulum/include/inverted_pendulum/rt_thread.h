@@ -16,15 +16,14 @@ class RtThread : public CyclicThread {
 
   // Pendulum properties
   const double initial_position_ = 0.6;  // Initial position of the pendulum in rad, 0 indicates top
+  double       desired_position_ = 0.0;  // Desired position of the pendulum in rad, 0 indicates top
   const double length_ = 0.5;            // Length of the pendulum in meters
   double       current_position_;
   double       current_velocity_ = 0;  // Assume the pendulum starts from stationary
   double       velocity_command_ = 0;
 
   // Controller properties
-  const double kp_ = 5E-4;
-  const double ki_ = 0;
-  const double kd_ = 1E-5;
+  PIDConstants pid_constants_{5E-4, 0, 1E-5};
   double       error_sum_ = 0;
   double       prev_error_ = 0;
 

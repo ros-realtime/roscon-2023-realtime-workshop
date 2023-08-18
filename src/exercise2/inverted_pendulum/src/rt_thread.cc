@@ -34,8 +34,16 @@ double RtThread::GetCommand(const double current_position, const double desired_
   // Calculate integral of error with saturation
   error_sum_ = std::clamp(error_sum_ + error * dt, -100.0, 100.0);
 
+  // Get the latest PID constants
+  {
+    auto span = Tracer().WithSpan("GetPIDConstants", "app");
+    pid_constants_ = shared_context_->GetPIDConstants();
+  }
+
   // Calculate PID control law
-  double position_command = kp_ * error + ki_ * error_sum_ + kd_ * (error - prev_error_) / dt;
+  double position_command = pid_constants_.kp * error +
+                            pid_constants_.ki * error_sum_ +
+                            pid_constants_.kd * (error - prev_error_) / dt;
 
   // Update previous error
   prev_error_ = error;
@@ -54,6 +62,8 @@ void RtThread::WriteCommand(const double output) {
 
 void RtThread::BeforeRun() {
   current_position_ = initial_position_;
+  shared_context_->desired_position = desired_position_;
+  shared_context_->SetPIDConstants(pid_constants_);
 }
 
 bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
@@ -65,8 +75,11 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
     current_velocity_ = 0;
     shared_context_->reset = false;
   }
+
+  desired_position_ = shared_context_->desired_position;
+
   const double current_position = ReadSensor(cycle_time_ns);
-  const double output = GetCommand(current_position, 0, cycle_time_ns);
+  const double output = GetCommand(current_position, desired_position_, cycle_time_ns);
   WriteCommand(output);
 
   auto span = Tracer().WithSpan("UpdateSharedContext", "app");

@@ -17,6 +17,7 @@ FetchContent_MakeAvailable(cactus_rt)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
+  inverted_pendulum_interfaces
   rclcpp
   sensor_msgs
   std_srvs

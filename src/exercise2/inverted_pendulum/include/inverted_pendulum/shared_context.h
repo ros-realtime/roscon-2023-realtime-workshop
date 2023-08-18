@@ -1,11 +1,13 @@
 #ifndef INVERTED_PENDULUM_SHARED_CONTEXT_H_
 #define INVERTED_PENDULUM_SHARED_CONTEXT_H_
 
+#include <cactus_rt/mutex.h>
 #include <cactus_rt/rt.h>
 #include <readerwriterqueue.h>
 
 #include <atomic>
 #include <ctime>
+#include <mutex>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 
@@ -16,6 +18,12 @@ struct OutputData {
   double          output_value = 0.0;
   OutputData() = default;
   OutputData(struct timespec t, double o) : timestamp(t), output_value(o) {}
+};
+
+struct PIDConstants {
+  double kp;  // Proportional gain
+  double ki;  // Integral gain
+  double kd;  // Derivative gain
 };
 
 // Shared context between the RT thread and the ROS thread
@@ -34,6 +42,9 @@ class SharedContext {
 
   // Used to reset the pendulum to its initial position and velocity
   std::atomic<bool> reset = false;
+
+  // Used to set the desired position (in radians) for the pendulum
+  std::atomic<double> desired_position = 0;
 
   /**
    * This method should only be called by one consumer (thread). It pushes data
@@ -55,8 +66,21 @@ class SharedContext {
     return queue_.try_dequeue(data);
   }
 
+  void SetPIDConstants(PIDConstants pid_constants) {
+    const std::scoped_lock lock(pid_constant_mutex_);
+    pid_constants_ = pid_constants;
+  }
+
+  PIDConstants GetPIDConstants() {
+    const std::scoped_lock lock(pid_constant_mutex_);
+    return pid_constants_;
+  }
+
  private:
   ReaderWriterQueue<OutputData> queue_ = ReaderWriterQueue<OutputData>(8'192);
+
+  cactus_rt::mutex pid_constant_mutex_;
+  PIDConstants     pid_constants_;
 
   void IncrementMessageCount(uint32_t successful_message_count) noexcept {
     auto                old_count = message_count_.load();
