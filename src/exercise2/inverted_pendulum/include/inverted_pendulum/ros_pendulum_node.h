@@ -56,14 +56,14 @@ class RosPendulumNode : public rclcpp::Node {
     const std::shared_ptr<inverted_pendulum_interfaces::srv::SetDesiredPosition::Request> request,
     std::shared_ptr<inverted_pendulum_interfaces::srv::SetDesiredPosition::Response> /* response */
   ) {
-    shared_context_->desired_position = request->desired_position;
+    shared_context_->desired_position.value = request->desired_position;
   }
 
   void SetPIDConstants(
     const std::shared_ptr<inverted_pendulum_interfaces::srv::SetPIDConstants::Request> request,
     std::shared_ptr<inverted_pendulum_interfaces::srv::SetPIDConstants::Response> /* response */
   ) {
-    shared_context_->SetPIDConstants(PIDConstants{request->kp, request->ki, request->kd});
+    shared_context_->pid_constants.Set(PIDConstants{request->kp, request->ki, request->kd});
   }
 };
 

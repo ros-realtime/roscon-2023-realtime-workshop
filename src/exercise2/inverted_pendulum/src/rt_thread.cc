@@ -36,8 +36,8 @@ double RtThread::GetCommand(const double current_position, const double desired_
 
   // Get the latest PID constants
   {
-    auto span = Tracer().WithSpan("GetPIDConstants", "app");
-    pid_constants_ = shared_context_->GetPIDConstants();
+    auto pid_span = Tracer().WithSpan("GetPIDConstants", "app");
+    pid_constants_ = shared_context_->pid_constants.Get();
   }
 
   // Calculate PID control law
@@ -62,8 +62,8 @@ void RtThread::WriteCommand(const double output) {
 
 void RtThread::BeforeRun() {
   current_position_ = initial_position_;
-  shared_context_->desired_position = desired_position_;
-  shared_context_->SetPIDConstants(pid_constants_);
+  shared_context_->desired_position.value = desired_position_;
+  shared_context_->pid_constants.Set(pid_constants_);
 }
 
 bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
@@ -76,7 +76,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
     shared_context_->reset = false;
   }
 
-  desired_position_ = shared_context_->desired_position;
+  desired_position_ = shared_context_->desired_position.value;
 
   const double current_position = ReadSensor(cycle_time_ns);
   const double output = GetCommand(current_position, desired_position_, cycle_time_ns);
@@ -87,7 +87,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
   struct timespec ts;
   clock_gettime(CLOCK_REALTIME, &ts);
 
-  shared_context_->EmplaceData(ts, current_position);
+  shared_context_->data_queue.EmplaceData(ts, current_position);
 
   LOG_INFO_LIMIT(std::chrono::milliseconds{100}, Logger(), "Controller output {}", output);
 

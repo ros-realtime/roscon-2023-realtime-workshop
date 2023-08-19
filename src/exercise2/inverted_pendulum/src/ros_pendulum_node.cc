@@ -34,7 +34,7 @@ void RosPendulumNode::TimerCallback() {
   // Empty the queue of all data
   while (true) {
     // Check if there is data in the queue
-    if (shared_context_->PopData(data)) {
+    if (shared_context_->data_queue.PopData(data)) {
       // Construct a joint_state message for the pendulum position
       sensor_msgs::msg::JointState joint_state_msg;
       joint_state_msg.header.stamp.sec = static_cast<int32_t>(data.timestamp.tv_sec);
