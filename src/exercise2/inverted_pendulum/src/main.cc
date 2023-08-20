@@ -29,8 +29,9 @@ int main(int argc, char* argv[]) {
   );
 
   cactus_rt::CyclicThreadConfig rt_thread_config;
-  rt_thread_config.period_ns = 1'000'000;
-  rt_thread_config.SetFifoScheduler(80);
+  rt_thread_config.period_ns = 1'000'000;             // 1 ms loop
+  rt_thread_config.SetFifoScheduler(80);              // Use FIFO scheduler with  thread priority 80
+  rt_thread_config.tracer_config.trace_sleep = true;  // Trace the sleep duration
   auto rt_thread = std::make_shared<RtThread>(shared_context, rt_thread_config);
 
   App app;

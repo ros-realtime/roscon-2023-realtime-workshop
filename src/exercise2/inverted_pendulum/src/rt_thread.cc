@@ -56,7 +56,7 @@ double RtThread::GetCommand(const double current_position, const double desired_
 }
 
 void RtThread::WriteCommand(const double output) {
-  auto span = Tracer().WithSpan("writeCommand", "app");
+  auto span = Tracer().WithSpan("WriteCommand", "app");
   velocity_command_ = output;
 }
 
@@ -76,18 +76,22 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
     shared_context_->reset = false;
   }
 
-  desired_position_ = shared_context_->desired_position.value;
+  {
+    auto span = Tracer().WithSpan("GetDesiredPosition", "app");
+    desired_position_ = shared_context_->desired_position.value;
+  }
 
   const double current_position = ReadSensor(cycle_time_ns);
   const double output = GetCommand(current_position, desired_position_, cycle_time_ns);
   WriteCommand(output);
 
-  auto span = Tracer().WithSpan("UpdateSharedContext", "app");
-
   struct timespec ts;
   clock_gettime(CLOCK_REALTIME, &ts);
 
-  shared_context_->data_queue.EmplaceData(ts, current_position);
+  {
+    auto span = Tracer().WithSpan("UpdateQueue", "app");
+    shared_context_->data_queue.EmplaceData(ts, current_position);
+  }
 
   LOG_INFO_LIMIT(std::chrono::milliseconds{100}, Logger(), "Controller output {}", output);
 
