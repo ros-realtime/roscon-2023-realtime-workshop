@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>ROScon 2023 real-time workshop file share</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <h2>Trace viewer (Perfetto)</h2>
+  <p>
+    <a href="perfetto/">You can access the trace viewer hosted on this Raspberry Pi here.</a>
+  </p>
+
+  <h2>Development repository download</h2>
+  <p>
+    <a href="data/repository.tar.gz">Click here to download the development repository: repository.tar.gz</a>
+  </p>
+
+  <p>
+    After downloading the repo, please run <strong><code>tar xvf repository.tar.gz</code></strong> to extract the data.
+  </p>
+
+  <h2>Docker image for development on laptops</h2>
+  <p>
+    <a href="data/image.tar.gz">Click here to download the Docker image: image.tar.gz</a>
+  </p>
+  <p>
+    After downloading the image and the repository, run:
+  </p>
+  <ol>
+    <li><code>cd roscon-2023-realtime-workshop</code></li>
+    <li>
+      <code>docker/import path/to/repository.tar.gz</code>
+      <ul>
+        <li>For example, if you downloaded the file to <code>~/Downloads</code>, then run
+          <code>docker/import ~/Docker/repository.tar.gz</code>.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Log into this Raspberry Pi</h2>
+  <p>
+    Login with the command: <strong><code>ssh ubuntu@192.168.10.1</code></strong>
+    <br>
+    Password is <strong>ubuntu</strong>
+  </p>
+
+  <h2>Browse the state of the repo on this Raspberry Pi and download trace files</h2>
+  <p>
+    <a href="repo/">Click here</a>
+  </p>
+</body>
+
+</html>

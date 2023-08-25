@@ -20,7 +20,7 @@ if [ -n "$filename" ]; then
 else
   # try to fetch it from the server
   echo "Fetching from image from Raspberry Pi server..."
-  echo "Not yet implemented" >&2
+  curl http://192.168.10.1/data/image.tar.gz | zcat | docker load
   exit 1
 fi
 

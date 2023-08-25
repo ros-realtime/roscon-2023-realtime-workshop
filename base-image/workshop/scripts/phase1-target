@@ -2,9 +2,48 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+set -xe
+
 apt-get update
 # Need the force because we already copied /etc/dnsmasq.conf
-apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" --force-yes dnsmasq
-apt-get install -y net-tools
+apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" --force-yes \
+  build-essential \
+  dnsmasq \
+  git \
+  net-tools \
+  nginx \
+  protobuf-compiler \
+  python3-colcon-common-extensions \
+  stress-ng \
+  sudo \
+;
 
-echo "ubuntu:hunter2" | chpasswd
+adduser --gecos "" --disabled-password ubuntu
+echo "ubuntu:ubuntu" | chpasswd
+usermod -a -G adm,audio,cdrom,dialout,dip,floppy,lxd,netdev,plugdev,sudo,video ubuntu
+
+systemctl enable chpassword.service
+
+# So the nginx instance can access the repo
+usermod -a -G ubuntu www-data
+
+cd /home/ubuntu
+
+git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git repo
+
+tar cvzf repository.tar.gz repo
+mv repository.tar.gz /var/www/html/data
+
+cd repo
+source /opt/ros/humble/setup.bash
+
+cd exercise1
+colcon build
+cd ..
+
+cd exercise2
+colcon build
+cd ..
+
+cd ..
+chown -R ubuntu:ubuntu repo

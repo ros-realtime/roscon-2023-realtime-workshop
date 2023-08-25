@@ -10,3 +10,6 @@
 [submodule "vendor/argparse"]
 	path = vendor/argparse
 	url = https://github.com/p-ranav/argparse.git
+[submodule "vendor/ros-realtime-rpi4-image"]
+	path = vendor/ros-realtime-rpi4-image
+	url = https://github.com/ros-realtime/ros-realtime-rpi4-image

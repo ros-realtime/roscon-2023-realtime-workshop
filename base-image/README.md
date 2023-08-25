@@ -27,7 +27,7 @@ Features
     `dnsmasq` the DNS server, `systemd-resolved` had to be disabled.
 - Any device that connects to the Raspberry Pi's Ethernet port will
   automatically get assigned an IP address via DHCP.
-- The username and password is `ubuntu` and `hunter2`.
+- The username and password is `ubuntu` and `ubuntu`.
 - If any USB Ethernet is connected to the Raspberry Pi, it will automatically
   configure via DHCP. This allows an escape hatch to connect to the Raspberry
   Pi by connecting it to a normal router via an USB Ethernet adapter.
