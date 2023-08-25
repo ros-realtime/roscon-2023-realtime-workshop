@@ -62,7 +62,7 @@ void RtThread::WriteCommand(const double output) {
 
 void RtThread::BeforeRun() {
   current_position_ = initial_position_;
-  shared_context_->desired_position.value = desired_position_;
+  shared_context_->desired_position.Set(desired_position_);
   shared_context_->pid_constants.Set(pid_constants_);
 }
 
@@ -78,7 +78,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
 
   {
     auto span = Tracer().WithSpan("GetDesiredPosition", "app");
-    desired_position_ = shared_context_->desired_position.value;
+    desired_position_ = shared_context_->desired_position.Get();
   }
 
   const double current_position = ReadSensor(cycle_time_ns);

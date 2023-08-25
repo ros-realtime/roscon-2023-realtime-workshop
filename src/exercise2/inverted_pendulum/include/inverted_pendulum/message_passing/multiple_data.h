@@ -21,7 +21,9 @@ struct MultipleData {
   }
 
  private:
-  cactus_rt::mutex pid_constant_mutex_;
+  // using mutex = cactus_rt::mutex;
+  using mutex = std::mutex;
+  mutex pid_constant_mutex_;
 
   PIDConstants pid_constants_;
 };
