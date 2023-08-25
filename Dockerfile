@@ -1,5 +1,8 @@
 FROM ros:humble-ros-base
 
+ENV ROS_LOCALHOST_ONLY=1
+ENV ROS_DOMAIN_ID=21
+
 RUN set -xe; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \

@@ -19,6 +19,7 @@
   "capAdd": [
     "SYS_NICE",
   ],
+  "forwardPorts": [3100],
   "overrideCommand": false,
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",

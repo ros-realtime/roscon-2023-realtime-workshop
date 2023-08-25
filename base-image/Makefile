@@ -1,4 +1,8 @@
 .PHONY: image
 
 image:
-	sudo ros-rt-img build jammy-rt jammy-rt-humble workshop
+	./build.sh
+
+teardown:
+	sudo ../vendor/ros-realtime-rpi4-image/ros-rt-img teardown
+	sudo rm -rf out cache

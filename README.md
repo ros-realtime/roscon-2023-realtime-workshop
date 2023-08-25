@@ -73,7 +73,11 @@ If you didn't get the image before the workshop, we will offer a way to get the
 image during the workshop without access to internet. **However, try to do the
 step above as the network bandwidth during the workshop is limited!**.
 
-TBD
+1. Connect your laptop to Raspberry Pi via Ethernet.
+2. Ensure the Raspberry Pi is powered on.
+3. You should be able to `ping 192.168.10.1` once the Pi is powered on and it is connected to the ethernet.
+4. `cd` into this repository.
+5. Run `docker/import`. This should automatically download and import the Docker image from the Ethernet-connected Raspberry Pi.
 
 ### Starting the Docker container
 
