@@ -12,7 +12,9 @@ def generate_launch_description():
   display_pendulum = IncludeLaunchDescription(
     PythonLaunchDescriptionSource([os.path.join(
       get_package_share_directory('inverted_pendulum_description'), 'launch'),
-      '/display.launch.py'])
+      '/display.launch.py']),
+      launch_arguments={
+                'joint_state_publisher': 'false',}.items()
   )
 
   ros_inverted_pendulum = Node(
@@ -24,5 +26,5 @@ def generate_launch_description():
 
   return LaunchDescription([
     display_pendulum,
-    ros_inverted_pendulum
+    ros_inverted_pendulum,
   ])
