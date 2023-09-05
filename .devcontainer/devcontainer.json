@@ -1,0 +1,48 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+  "name": "ros2",
+  "dockerFile": "Dockerfile",
+  "build": {
+    "args": {
+      "ROS_VERSION": "humble",
+      "WORKSPACE": "${containerWorkspaceFolder}"
+    }
+  },
+  "remoteUser": "user", // Container user
+  "runArgs": [
+    "--device=/dev/dri", // For AMD devices (not tested)
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix", // Required for graphics
+    "--memory=16g", // Memory limit
+    "--ulimit=rtprio=99", // The maximum realtime priority allowed for the container
+    "--ulimit=memlock=-1", // No maximum locked-in-memory address space
+  ],
+  "capAdd": [
+    "SYS_NICE",
+  ],
+  "overrideCommand": false,
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}",
+    "QT_X11_NO_MITSHM": "1" // Required for QT apps like RViz, otherwise they may freeze
+  },
+  "init": true, // Use init process that respects signal handlers
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "telemetry.telemetryLevel": "off",
+        "telemetry.enableTelemetry": false,
+        "editor.formatOnSave": true,
+        "clang-format.executable": "clang-format-14",
+        "clang-format.language.cpp.style": "file",
+        "extensions.ignoreRecommendations": true
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-iot.vscode-ros",
+        "ms-vscode.cpptools",
+        "redhat.vscode-yaml",
+        "twxs.cmake",
+        "notskm.clang-tidy",
+      ]
+    }
+  }
+}
