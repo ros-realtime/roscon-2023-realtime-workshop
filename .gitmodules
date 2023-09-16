@@ -1,0 +1,9 @@
+[submodule "vendor/cactus-rt-integrated/cactus-rt"]
+	path = vendor/cactus-rt-integrated/cactus-rt
+	url = https://github.com/cactusdynamics/cactus-rt.git
+[submodule "vendor/cactus-rt-integrated/quill"]
+	path = vendor/cactus-rt-integrated/quill
+	url = https://github.com/odygrd/quill.git
+[submodule "vendor/cactus-rt-integrated/readerwriterqueue"]
+	path = vendor/cactus-rt-integrated/readerwriterqueue
+	url = https://github.com/cameron314/readerwriterqueue.git
