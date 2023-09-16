@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# This script gets you a working shell in the docker environment spawned by VS code.
+
+# 🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦
+# https://github.com/microsoft/vscode-remote-release/issues/2485
+# 🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦🤦
+
+exec docker exec -e TERM -it "$(docker ps -aqf "label=devcontainer.local_folder=$(pwd)")" sudo -u user bash -l
