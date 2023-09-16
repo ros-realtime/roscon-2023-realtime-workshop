@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -xe
+
+rm -rf perfetto
+
+mkdir -p src
+cd src
+
+rm -rf perfetto perfetto.tar.gz
+wget -O perfetto.tar.gz https://github.com/cactusdynamics/perfetto/archive/refs/tags/roscon-rc1.tar.gz
+echo "db42a7a94234e89a392d72464a4520dc423c44d0047a52018eb4a753f7a66dbc perfetto.tar.gz" | sha256sum -c
+mkdir perfetto
+tar --strip-components=1 -C perfetto -xvf perfetto.tar.gz
+cd perfetto
+tools/install-build-deps --ui
+ui/build
+
+cd ../..
+cp -ar src/perfetto/out/ui/ui/dist perfetto
