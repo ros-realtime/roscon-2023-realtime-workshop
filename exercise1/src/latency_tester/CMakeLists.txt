@@ -16,7 +16,7 @@ add_subdirectory(
 )
 
 add_executable(latency_tester
-  src/main.cc
+  main.cc
 )
 
 target_link_libraries(latency_tester
