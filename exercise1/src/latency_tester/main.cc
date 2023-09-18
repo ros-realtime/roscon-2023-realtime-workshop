@@ -12,9 +12,18 @@ cactus_rt::CyclicThreadConfig CreateRtThreadConfig(uint32_t index) {
   config.cpu_affinity = {index};
 
   config.tracer_config.trace_loop = true;
+  config.tracer_config.trace_overrun = true;
+  config.tracer_config.trace_sleep = true;
   config.tracer_config.trace_wakeup_latency = true;
 
   return config;
+}
+
+void WasteTime(std::chrono::microseconds duration) {
+  const auto start = cactus_rt::NowNs();
+  auto       duration_ns = duration.count() * 1000;
+  while (cactus_rt::NowNs() - start < duration_ns) {
+  }
 }
 
 class RtThread : public cactus_rt::CyclicThread {
@@ -26,6 +35,7 @@ class RtThread : public cactus_rt::CyclicThread {
 
  protected:
   bool Loop(int64_t /* ellapsed_ns */) noexcept final {
+    WasteTime(std::chrono::microseconds(200));
     return false;
   }
 };
@@ -67,6 +77,11 @@ int main(int argc, char** argv) {
   auto time_in_seconds = program.get<int32_t>("--time");
   auto threads = program.get<uint32_t>("--threads");
   auto filename = program.get("--file");
+
+  if (threads > std::thread::hardware_concurrency()) {
+    std::cerr << "error: specified threads is greater than num cpu " << std::thread::hardware_concurrency() << "\n";
+    std::exit(1);
+  }
 
   cactus_rt::App app(kAppName);
 
