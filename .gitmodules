@@ -7,3 +7,6 @@
 [submodule "vendor/cactus-rt-integrated/readerwriterqueue"]
 	path = vendor/cactus-rt-integrated/readerwriterqueue
 	url = https://github.com/cameron314/readerwriterqueue.git
+[submodule "vendor/argparse"]
+	path = vendor/argparse
+	url = https://github.com/p-ranav/argparse.git
