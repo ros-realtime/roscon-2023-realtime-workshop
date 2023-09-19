@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
   //     while (true) {
   //       const auto now = std::chrono::system_clock::now();
   //       const auto now_millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-  //       shared_context->desired_position.Set(sin(now_millis));
+  //       shared_context->desired_position.Set(sin(static_cast<double>(now_millis)));
   //       std::cout << now_millis << "\n";
   //     }
   //   }
