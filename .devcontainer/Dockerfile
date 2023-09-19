@@ -30,6 +30,7 @@ RUN set -xe; \
         python3-pip \
         ros-${ROS_VERSION}-joint-state-publisher-gui \
         ros-${ROS_VERSION}-rmw-cyclonedds-cpp \
+        stress-ng \
         wget \
         xdg-utils \
     ; \
