@@ -2,18 +2,13 @@
 cmake_minimum_required(VERSION 3.18)
 project(inverted_pendulum_example)
 
-set(CMAKE_BUILD_TYPE Debug)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # CactusRT
-include(FetchContent)
-FetchContent_Declare(
-  cactus_rt
-  GIT_REPOSITORY https://github.com/cactusdynamics/cactus-rt.git
-  GIT_TAG        ...
+add_subdirectory(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../../vendor/cactus-rt-integrated
+  ${CMAKE_CURRENT_BINARY_DIR}/cactus-rt-build
 )
-FetchContent_MakeAvailable(cactus_rt)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   ament_cmake
