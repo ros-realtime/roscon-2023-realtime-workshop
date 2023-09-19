@@ -45,12 +45,11 @@ int main(int argc, char* argv[]) {
   // // ***************
   // // * Example 2.2 *
   // // ***************
-  // // Repeatedly set and get PID constants to force lock contention
+  // // Repeatedly get PID constants to force lock contention
   // auto set_pid_thread = std::thread(
   //   [&]() {
   //     while (true) {
-  //       auto pid = shared_context->pid_constants.Get();
-  //       shared_context->pid_constants.Set(pid);
+  //       shared_context->pid_constants.Get();
   //     }
   //   }
   // );
