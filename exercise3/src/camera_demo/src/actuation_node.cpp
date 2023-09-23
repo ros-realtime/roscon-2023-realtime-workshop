@@ -7,6 +7,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/empty.hpp"
+#include "rclcpp/experimental/fifo_sched.hpp"
 
 using namespace std::chrono_literals;
 
@@ -20,6 +21,11 @@ public:
     // Create a subscription on the "stop" topic
     subscription_ = this->create_subscription<std_msgs::msg::Empty>(
       "stop", 10, std::bind(&ActuationNode::stop_robot, this, std::placeholders::_1));
+
+    // TODO: Omit this in the exercise
+    sched_param sp;
+    sp.sched_priority = MEDIUM;
+    subscription_->sched_param(sp);
   }
 
 private:
@@ -37,6 +43,9 @@ private:
 int main() {
   rclcpp::init(0, nullptr);
   auto node = std::make_shared<ActuationNode>();
+
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

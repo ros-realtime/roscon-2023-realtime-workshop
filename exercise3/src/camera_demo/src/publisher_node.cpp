@@ -53,6 +53,7 @@ private:
 };
 
 int main() {
+  // OMIT Everything below during exercise
   rclcpp::init(0, nullptr);
   auto node = std::make_shared<PublisherNode>();
   rclcpp::spin(node);
