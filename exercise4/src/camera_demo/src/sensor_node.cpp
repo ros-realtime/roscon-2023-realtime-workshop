@@ -8,26 +8,32 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/empty.hpp"
+#include "rclcpp/experimental/fifo_sched.hpp"
 
 using namespace std::chrono_literals;
 
 
-class SubscriberNode : public rclcpp::Node
+class SensorNode : public rclcpp::Node
 {
 public:
-  SubscriberNode()
+  SensorNode()
   : Node("subscriber_node")
   {
     // Create a subscription on the "camera" topic to log the image
-    subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "camera", 10, std::bind(&SubscriberNode::data_logger, this, std::placeholders::_1));
+    subscription_logger_ = this->create_subscription<sensor_msgs::msg::Image>(
+      "camera", 10, std::bind(&SensorNode::data_logger, this, std::placeholders::_1));
 
     // Create a subscription on the "camera" topic to detect an object
-    subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "camera", 10, std::bind(&SubscriberNode::object_detector, this, std::placeholders::_1));
+    subscription_object_ = this->create_subscription<sensor_msgs::msg::Image>(
+      "camera", 10, std::bind(&SensorNode::object_detector, this, std::placeholders::_1));
 
     // Create a publisher on the "stop" topic
     publisher_ = this->create_publisher<std_msgs::msg::Empty>("stop", 10);
+
+    // TODO: Omit this in the exercise
+    sched_param sp;
+    sp.sched_priority = HIGH;
+    subscription_object_->sched_param(sp);
   }
 
 private:
@@ -55,7 +61,9 @@ private:
     }
   }
 
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
+  // TODO: Supply these for callback groups
+  rclcpp::SensorNode<sensor_msgs::msg::Image>::SharedPtr subscription_logger_;
+  rclcpp::SensorNode<sensor_msgs::msg::Image>::SharedPtr subscription_object_;
   rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr publisher_;
 };
 
@@ -67,14 +75,15 @@ int main() {
   rclcpp::CallbackGroup::SharedPtr data_logger_group = node->create_callback_group(
     rclcpp::CallbackGroupType::MutuallyExclusive);
   rclcpp::CallbackGroup::SharedPtr object_detector_group = node->create_callback_group(
-    rclcpp::CallbackGroupType::MutuallyExclusive);
+    rclcpp::CallbackGroupType::MutuallyExclusive);  // OMIT IN EXERCISE
 
   // Create an executor to put the callback groups in
   rclcpp::executors::SingleThreadedExecutor data_logging_executor;
-  rclcpp::executors::SingleThreadedExecutor object_detector_executor;
+  rclcpp::executors::SingleThreadedExecutor object_detector_executor;  // OMIT IN EXERCISE
   data_logging_executor.add_callback_group(data_logger_group, node->get_node_base_interface());
-  object_detector_executor.add_callback_group(object_detector_group, node->get_node_base_interface());
+  object_detector_executor.add_callback_group(object_detector_group, node->get_node_base_interface());  // OMIT IN EXERCISE
 
+  // OMIT IN EXERCISE
   // Create thread for object detector executor
   std::thread object_detector_thread([&object_detector_executor]() {
     // Give this thread real-time priority
@@ -87,8 +96,8 @@ int main() {
     object_detector_executor.spin();
   });
 
+  // OMIT IN EXERCISE
   // Run the data logger in the main thread, without realtime priority
   data_logging_executor.spin();
-  rclcpp::shutdown();
   return 0;
 }

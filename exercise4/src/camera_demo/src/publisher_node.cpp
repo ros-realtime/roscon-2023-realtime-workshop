@@ -35,8 +35,8 @@ private:
     msg->header.frame_id = "camera";
 
     // Set the image dimensions
-    msg->height = 480;
-    msg->width = 640;
+    msg->height = 224;
+    msg->width = 224;
 
     // Set the image encoding
     msg->encoding = "rgb8";
@@ -53,6 +53,7 @@ private:
 };
 
 int main() {
+  // OMIT IN EXERCISE
   rclcpp::init(0, nullptr);
   auto node = std::make_shared<PublisherNode>();
   rclcpp::spin(node);

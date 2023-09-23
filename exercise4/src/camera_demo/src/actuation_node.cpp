@@ -38,6 +38,7 @@ int main() {
   rclcpp::init(0, nullptr);
   auto node = std::make_shared<ActuationNode>();
 
+  // OMIT IN EXERCISE
   // Set the priority of this thread to be real-time
   sched_param sch;
   sch.sched_priority = 50;
