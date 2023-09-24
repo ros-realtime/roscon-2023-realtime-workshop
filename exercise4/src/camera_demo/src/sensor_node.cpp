@@ -8,7 +8,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "std_msgs/msg/empty.hpp"
-#include "rclcpp/experimental/fifo_sched.hpp"
 
 using namespace std::chrono_literals;
 
@@ -19,21 +18,44 @@ public:
   SensorNode()
   : Node("subscriber_node")
   {
+    // Create callback groups
+    realtime_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    besteffort_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+
+    // Create subscription options
+    rclcpp::SubscriptionOptions realtime_options;
+    realtime_options.callback_group = realtime_group_;
+    rclcpp::SubscriptionOptions besteffort_options;
+    besteffort_options.callback_group = besteffort_group_;
+
     // Create a subscription on the "camera" topic to log the image
     subscription_logger_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "camera", 10, std::bind(&SensorNode::data_logger, this, std::placeholders::_1));
+      "camera", 10, std::bind(&SensorNode::data_logger, this, std::placeholders::_1),
+      besteffort_options);
 
     // Create a subscription on the "camera" topic to detect an object
     subscription_object_ = this->create_subscription<sensor_msgs::msg::Image>(
-      "camera", 10, std::bind(&SensorNode::object_detector, this, std::placeholders::_1));
+      "camera", 10, std::bind(&SensorNode::object_detector, this, std::placeholders::_1),
+      realtime_options);
 
     // Create a publisher on the "stop" topic
     publisher_ = this->create_publisher<std_msgs::msg::Empty>("stop", 10);
+  }
 
-    // TODO: Omit this in the exercise
-    sched_param sp;
-    sp.sched_priority = HIGH;
-    subscription_object_->sched_param(sp);
+  rclcpp::CallbackGroup::SharedPtr get_realtime_cbg() {
+    if (!realtime_group_) {
+      realtime_group_ = this->create_callback_group(
+        rclcpp::CallbackGroupType::MutuallyExclusive);
+    }
+    return realtime_group_;
+  }
+
+  rclcpp::CallbackGroup::SharedPtr get_besteffort_cbg() {
+    if (!besteffort_group_) {
+      besteffort_group_ = this->create_callback_group(
+        rclcpp::CallbackGroupType::MutuallyExclusive);
+    }
+    return besteffort_group_;
   }
 
 private:
@@ -61,21 +83,21 @@ private:
     }
   }
 
-  // TODO: Supply these for callback groups
-  rclcpp::SensorNode<sensor_msgs::msg::Image>::SharedPtr subscription_logger_;
-  rclcpp::SensorNode<sensor_msgs::msg::Image>::SharedPtr subscription_object_;
+  // Supply these for callback groups
+  rclcpp::CallbackGroup::SharedPtr realtime_group_;
+  rclcpp::CallbackGroup::SharedPtr besteffort_group_;
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_logger_;
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_object_;
   rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr publisher_;
 };
 
 int main() {
   rclcpp::init(0, nullptr);
-  auto node = std::make_shared<SubscriberNode>();
+  auto node = std::make_shared<SensorNode>();
 
   // Put each subscriber in two different callback groups
-  rclcpp::CallbackGroup::SharedPtr data_logger_group = node->create_callback_group(
-    rclcpp::CallbackGroupType::MutuallyExclusive);
-  rclcpp::CallbackGroup::SharedPtr object_detector_group = node->create_callback_group(
-    rclcpp::CallbackGroupType::MutuallyExclusive);  // OMIT IN EXERCISE
+  rclcpp::CallbackGroup::SharedPtr data_logger_group = node->get_besteffort_cbg();
+  rclcpp::CallbackGroup::SharedPtr object_detector_group = node->get_realtime_cbg();  // OMIT IN EXERCISE
 
   // Create an executor to put the callback groups in
   rclcpp::executors::SingleThreadedExecutor data_logging_executor;
