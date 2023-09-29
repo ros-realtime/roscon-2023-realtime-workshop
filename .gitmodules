@@ -10,3 +10,7 @@
 [submodule "vendor/argparse"]
 	path = vendor/argparse
 	url = https://github.com/p-ranav/argparse.git
+[submodule "exercise3/src/rclcpp"]
+	path = exercise3/src/rclcpp
+	url = https://github.com/nightduck/rclcpp.git
+	branch = workshop_executor
