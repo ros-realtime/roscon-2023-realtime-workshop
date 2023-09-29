@@ -1,0 +1,42 @@
+#!/bin/bash
+
+DOCKER_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+cd $DOCKER_DIR/..
+
+name=roscon-2023-realtime-workshop
+
+set -x
+
+docker stop $name
+docker rm $name
+docker run \
+  -d \
+  --device=/dev/dri \
+  --volume=/tmp/.X11-unix:/tmp/.X11-unix \
+  --volume=$(pwd):/code \
+  --ulimit=rtprio=98 \
+  --ulimit=memlock=-1 \
+  --cap-add=SYS_NICE \
+  --init \
+  --rm \
+  -p 3100:3100 \
+  -e "DISPLAY=${DISPLAY}" \
+  -e "QT_X11_NO_MITSHM=1" \
+  -e "HOST_UID=$(id -u)" \
+  -e "HOST_GID=$(id -g)" \
+  --name=$name \
+  $name
+
+set +x
+
+if [ "$?" == "0" ]; then
+  echo "Started container $name. To enter the container, run the command:"
+  echo
+  echo "  docker/shell"
+else
+  echo "Error: failed to start container $name. did you import the image?" >&2
+  echo "" >&2
+  echo "Try running docker/import before running this again" >&2
+  exit 1
+fi
