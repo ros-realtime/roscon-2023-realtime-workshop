@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   // // ***************
   // // * Example 2.1 *
   // // ***************
-  // // Repeatedly set and get PID constants to force lock contention
+  // // Repeatedly set desired position to force lock contention
   // auto set_desired_positions_thread = std::thread(
   //   [&]() {
   //     while (true) {
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
   // // * Example 2.2 *
   // // ***************
   // // Repeatedly get PID constants to force lock contention
-  // auto set_pid_thread = std::thread(
+  // auto get_pid_thread = std::thread(
   //   [&]() {
   //     while (true) {
   //       shared_context->pid_constants.Get();

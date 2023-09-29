@@ -5,13 +5,19 @@ This package serves as a demo inverted pendulum. The pendulum is kept upright by
 
 ## Launch
 
-To start the demo, run the following command:
+If your computer supports graphics, you can run the following command to start the pendulum demo with RViz:
+
+```bash
+ros2 launch inverted_pendulum_example demo.launch.py rviz:=true
+```
+
+Instead, if you are running the simulation on a computer without graphics (ex. Raspberry Pi), use the following command to start the demo:
 
 ```bash
 ros2 launch inverted_pendulum_example demo.launch.py
 ```
 
-This will start the pendulum simulation. To view the pendulum, start RViz:
+This will start the pendulum simulation without RViz. To view the pendulum, start RViz on a computer that is networked with the simulation computer:
 
 ```bash
 rviz2
