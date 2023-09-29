@@ -17,6 +17,12 @@ find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
 
+# Integrated cactus-rt dependencies for the workshop
+add_subdirectory(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../../vendor/cactus-rt-integrated
+  ${CMAKE_CURRENT_BINARY_DIR}/cactus-rt-build
+)
+
 include_directories(
   include
   ${OpenCV_INCLUDE_DIRS}
@@ -38,6 +44,9 @@ ament_target_dependencies(sensor_node
   cv_bridge
   image_transport
 )
+target_link_libraries(sensor_node
+  cactus_rt
+)
 
 add_executable(actuation_node src/actuation_node.cpp)
 ament_target_dependencies(actuation_node
@@ -45,6 +54,9 @@ ament_target_dependencies(actuation_node
   sensor_msgs
   cv_bridge
   image_transport
+)
+target_link_libraries(actuation_node
+  cactus_rt
 )
 
 install(TARGETS
