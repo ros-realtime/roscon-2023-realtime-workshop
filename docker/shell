@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec docker exec -it roscon-2023-realtime-workshop sudo -u user -i

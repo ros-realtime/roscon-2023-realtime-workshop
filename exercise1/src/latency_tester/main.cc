@@ -54,7 +54,7 @@ argparse::ArgumentParser ParseArgs(int argc, char** argv) {
     .help("Number of seconds to test latency for");
 
   program.add_argument("-f", "--file")
-    .default_value(std::string("data.perfetto"))
+    .default_value(std::string("exercise1.perfetto"))
     .help("Perfetto trace file to write to");
 
   try {

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+filename=$1
+name=roscon-2023-realtime-workshop
+
+set -e
+
+if [ -n "$filename" ]; then
+  if [ ! -f "$filename" ]; then
+    echo "Error: $filename is not a valid file" >&2
+    exit 1
+  fi
+
+  echo "Trying to import $filename to $name. This should take about a minute."
+  if command -v pv >/dev/null; then
+    pv $filename | zcat | docker load
+  else
+    docker load -i $filename
+  fi
+else
+  # try to fetch it from the server
+  echo "Fetching from image from Raspberry Pi server..."
+  echo "Not yet implemented" >&2
+  exit 1
+fi
+
+echo "Image has been imported. Try running the following command to start the container:"
+echo
+echo "  docker/start"
