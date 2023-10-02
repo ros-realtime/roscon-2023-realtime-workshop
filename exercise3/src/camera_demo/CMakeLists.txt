@@ -25,14 +25,16 @@ include_directories(
   ${OpenCV_INCLUDE_DIRS}
 )
 
-
-add_executable(publisher_node src/publisher_node.cpp)
+add_library(publisher_node src/publisher_node.cpp)
 ament_target_dependencies(publisher_node
   rclcpp
   sensor_msgs
 )
+target_link_libraries(publisher_node
+  cactus_rt
+)
 
-add_executable(sensor_node src/sensor_node.cpp)
+add_library(sensor_node src/sensor_node.cpp)
 ament_target_dependencies(sensor_node
   rclcpp
   sensor_msgs
@@ -41,7 +43,7 @@ target_link_libraries(sensor_node
   cactus_rt
 )
 
-add_executable(actuation_node src/actuation_node.cpp)
+add_library(actuation_node src/actuation_node.cpp)
 ament_target_dependencies(actuation_node
   rclcpp
   sensor_msgs
@@ -50,10 +52,16 @@ target_link_libraries(actuation_node
   cactus_rt
 )
 
+add_executable(camera_demo src/camera_demo.cpp)
+ament_target_dependencies(camera_demo
+  rclcpp
+)
+target_link_libraries(camera_demo
+  publisher_node sensor_node actuation_node cactus_rt
+)
+
 install(TARGETS
-  publisher_node
-  sensor_node
-  actuation_node
+  camera_demo
   DESTINATION lib/${PROJECT_NAME}
 )
 

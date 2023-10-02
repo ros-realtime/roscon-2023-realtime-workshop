@@ -7,56 +7,46 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
+#include "camera_demo/publisher_node.hpp"
 
 using namespace std::chrono_literals;
 
 
-class PublisherNode : public rclcpp::Node
+PublisherNode::PublisherNode() : Node("publisher_node")
 {
-public:
-  PublisherNode()
-  : Node("publisher_node")
-  {
-    // Create a publisher on the "camera" topic
-    publisher_ = this->create_publisher<sensor_msgs::msg::Image>("camera", 10);
+  publishing_tracer_ = std::make_shared<ThreadTracer>("publishing_thread");
 
-    // Create a timer that calls the publish function every 33ms
-    timer_ = this->create_wall_timer(33ms, std::bind(&PublisherNode::publish, this));
-  }
+  // Create a publisher on the "camera" topic
+  publisher_ = this->create_publisher<sensor_msgs::msg::Image>("camera", 10);
 
-private:
-  void publish()
-  {
-    // Create a new image message
-    auto msg = std::make_unique<sensor_msgs::msg::Image>();
+  // Create a timer that calls the publish function every 33ms
+  timer_ = this->create_wall_timer(33ms, std::bind(&PublisherNode::publish, this));
+}
 
-    // Fill the message header
-    msg->header.stamp = this->now();
-    msg->header.frame_id = "camera";
+PublisherNode::~PublisherNode() {
+}
 
-    // Set the image dimensions
-    msg->height = 480;
-    msg->width = 640;
+void PublisherNode::publish()
+{
+  auto span = publishing_tracer_->WithSpan("publish");
 
-    // Set the image encoding
-    msg->encoding = "rgb8";
+  // Create a new image message
+  auto msg = std::make_unique<sensor_msgs::msg::Image>();
 
-    // Set the image data
-    msg->data.resize(msg->height * msg->width * 3);
+  // Fill the message header
+  msg->header.stamp = this->now();
+  msg->header.frame_id = "camera";
 
-    // Publish the message
-    publisher_->publish(std::move(msg));
-  }
+  // Set the image dimensions
+  msg->height = 480;
+  msg->width = 640;
 
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
-  rclcpp::TimerBase::SharedPtr timer_;
-};
+  // Set the image encoding
+  msg->encoding = "rgb8";
 
-int main() {
-  // OMIT Everything below during exercise
-  rclcpp::init(0, nullptr);
-  auto node = std::make_shared<PublisherNode>();
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  return 0;
+  // Set the image data
+  msg->data.resize(msg->height * msg->width * 3);
+
+  // Publish the message
+  publisher_->publish(std::move(msg));
 }
