@@ -93,7 +93,7 @@ bool RtThread::Loop(int64_t ellapsed_ns) noexcept {
     shared_context_->data_queue.EmplaceData(ts, current_position);
   }
 
-  LOG_INFO_LIMIT(std::chrono::milliseconds{100}, Logger(), "Controller output {}", output);
+  LOG_INFO_LIMIT(std::chrono::seconds{1}, Logger(), "Controller output {}", output);
 
   // Loop forever
   return false;
