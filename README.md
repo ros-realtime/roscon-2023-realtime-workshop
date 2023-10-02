@@ -195,6 +195,11 @@ To connect to the Raspberry Pi:
 
 1. Connect the Ethernet to the Raspberry Pi 4's only Ethernet port.
 2. Connect the other end of the Ethernet to your laptop. You may have to do this via an USB Ethernet adapter.
-3. Wait briefly for your laptop to connect to the network.
+3. Wait briefly for the Raspberry Pi 4 to boot up and your laptop to connect to the network. This may take a few minutes on first boot.
 4. Once connected, the Raspberry Pi 4 is accessible at the IP address `192.168.10.1`.
 5. You can `ssh ubuntu@192.168.10.1`. The password is **`ubuntu`**.
+6. This repository is located in `~/repo`.
+
+You can also connect to the Raspberry Pi 4's HTTP server which hosts the trace
+viewer, the Docker image, a tarball of the repository. This is available at:
+http://192.168.10.1
