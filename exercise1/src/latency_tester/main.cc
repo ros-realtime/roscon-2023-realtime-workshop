@@ -8,7 +8,12 @@ const char* kAppName = "LatencyTester";
 
 cactus_rt::CyclicThreadConfig CreateRtThreadConfig(uint32_t index) {
   cactus_rt::CyclicThreadConfig config;
-  config.SetFifoScheduler(80);
+
+  config.SetOtherScheduler();
+
+  // Uncomment he following line to use the real-time scheduler
+  // config.SetFifoScheduler(80);
+
   config.cpu_affinity = {index};
 
   config.tracer_config.trace_loop = true;
@@ -54,7 +59,7 @@ argparse::ArgumentParser ParseArgs(int argc, char** argv) {
     .help("Number of seconds to test latency for");
 
   program.add_argument("-f", "--file")
-    .default_value(std::string("data.perfetto"))
+    .default_value(std::string("exercise1.perfetto"))
     .help("Perfetto trace file to write to");
 
   try {

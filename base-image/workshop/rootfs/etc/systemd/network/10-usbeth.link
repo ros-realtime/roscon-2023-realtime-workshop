@@ -1,0 +1,5 @@
+[Match]
+Path=*-usb-*
+
+[Link]
+Name=usbeth

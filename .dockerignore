@@ -1,5 +1,7 @@
-build
-log
+.git
 install
+log
+build
 *.perfetto
+*.pptx
 image.tar.gz

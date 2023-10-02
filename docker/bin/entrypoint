@@ -1,0 +1,51 @@
+#!/bin/bash
+
+username=user
+
+create_user_if_necessary() {
+  if ! getent passwd $username >/dev/null 2>/dev/null; then
+    echo "Creating user $username with $HOST_UID:$HOST_GID..."
+
+    addgroup --gid $HOST_GID $username
+    adduser --gid $HOST_GID --uid $HOST_UID --gecos "" --disabled-password $username
+
+    usermod -a -G sudo $username
+    usermod -a -G video $username
+
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/sudoers;
+  fi
+}
+
+# Need to fix user permissions to have access to the proper rendering for gazebo
+# https://github.com/linuxserver/docker-plex/blob/b01cd52/root/etc/cont-init.d/50-gid-video
+# They have a root clause that I'm not going to worry about. See:
+# https://github.com/linuxserver/docker-plex/pull/208#issuecomment-532948347
+fix_dri_permissions() {
+  local files=$(find /dev/dri -type c -print 2>/dev/null)
+
+  for file in $files; do
+    local gid=$(stat -c '%g' $file)
+    echo -n "$file has group of $gid... "
+    if id -G | grep -q "$gid"; then
+      echo "and is already a part of user $username"
+    else
+      local gname=$(getent group "$gid" | awk -F: '{print $1}')
+      if [ -z "$gname" ]; then
+        gname="video${gid}"
+        groupadd "$gname"
+        groupmod -g "$gid" "$gname"
+      fi
+
+      usermod -a -G "$gname" $username
+      echo "and is added to part of $username"
+    fi
+  done
+}
+
+set -xe
+
+create_user_if_necessary
+fix_dri_permissions
+
+cd /opt/perfetto
+exec python3 -m http.server 3100

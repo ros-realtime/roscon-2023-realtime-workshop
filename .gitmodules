@@ -14,3 +14,6 @@
 	path = exercise3/src/rclcpp
 	url = https://github.com/nightduck/rclcpp.git
 	branch = workshop_executor
+[submodule "vendor/ros-realtime-rpi4-image"]
+	path = vendor/ros-realtime-rpi4-image
+	url = https://github.com/ros-realtime/ros-realtime-rpi4-image
