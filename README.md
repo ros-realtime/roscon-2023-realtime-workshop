@@ -101,7 +101,7 @@ After starting the Docker container, you can login to the Docker container using
 the special [`docker/shell`](docker/shell) script:
 
 1. `cd` into this repository.
-2. `docker shell`
+2. `docker/shell`
 
 You should be greeted with something like the following:
 
@@ -159,5 +159,42 @@ $ rviz2
 
 The usual rviz2 GUI window should show up if all is well.
 
+### Using Visual Studio Code
+
+If you like to use VS code for development, we recommend the [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack), which enables the dev container system.
+
+Specifically, this repository contains a [`.devcontainer`](.devcontainer) setup.
+However, this setup relies on the image imported above using the `docker/import`
+script. So if you haven't performed the above and launched VS code in this
+repository with the dev container, it will result in an error.
+
+To use VS code with dev container, perform the Docker importing steps above and
+then simply open VS code with dev container in this repository. Everything
+should just work after that.
+
 Workshop setup for the Raspberry Pi 4
 -------------------------------------
+
+We are still finalizing whether or not we can bring a limited number of
+Raspberry Pi 4s to the workshop to loan out to people. So if you want to ensure
+you can follow the tutorial on a Raspberry Pi 4, it may be best to bring your
+own. We recommend the following hardware:
+
+- A Raspberry Pi 4 (4GB+ is recommended, 2GB may be OK)
+- An Ethernet cable and any necessary USB Ethernet adapters to connect the Raspberry Pi directly to your laptop
+- A microSD card with greater than 8GB
+- The Raspberry Pi 4 power supply with USA power plugs
+
+### Before the workshop: flashing the image
+
+TBD
+
+### Connecting to the Raspberry Pi 4
+
+To connect to the Raspberry Pi:
+
+1. Connect the Ethernet to the Raspberry Pi 4's only Ethernet port.
+2. Connect the other end of the Ethernet to your laptop. You may have to do this via an USB Ethernet adapter.
+3. Wait briefly for your laptop to connect to the network.
+4. Once connected, the Raspberry Pi 4 is accessible at the IP address `192.168.10.1`.
+5. You can `ssh ubuntu@192.168.10.1`. The password is **`ubuntu`**.
