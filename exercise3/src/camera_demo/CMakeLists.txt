@@ -22,7 +22,6 @@ add_subdirectory(
 
 include_directories(
   include
-  ${OpenCV_INCLUDE_DIRS}
 )
 
 add_library(publisher_node src/publisher_node.cpp)
