@@ -65,7 +65,7 @@ The exact version of Docker may be different than the above output.
 3. `cd` into the `roscon-2023-realtime-workshop` repository.
 4. `docker/import path/to/downloaded/image.tar.gz`.
 
-This should have imported now the Docker image with a name of `roscon-2023-realtime-workshop`. You can check with `docker image list`
+This should import the Docker image with a name of `roscon-2023-realtime-workshop`. You can check with `docker image list`
 
 ### Getting the image DURING the workshop (as a last resort)
 
