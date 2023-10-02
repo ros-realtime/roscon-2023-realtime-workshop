@@ -25,7 +25,7 @@ def generate_launch_description():
 
   ros_inverted_pendulum = Node(
     package="inverted_pendulum_example",
-    executable="inverted_pendulum_example",
+    executable="inverted_pendulum_example2-2",
     name="inverted_pendulum_example",
     output="both",
   )

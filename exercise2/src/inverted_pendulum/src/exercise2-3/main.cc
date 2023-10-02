@@ -1,9 +1,9 @@
 // Cactus RT
 #include <cactus_rt/rt.h>
 
-#include "inverted_pendulum/ros_pendulum_node.h"
-#include "inverted_pendulum/rt_thread.h"
-#include "inverted_pendulum/shared_context.h"
+#include "inverted_pendulum/exercise2-3/ros_pendulum_node.h"
+#include "inverted_pendulum/exercise2-3/rt_thread.h"
+#include "inverted_pendulum/exercise2-3/shared_context.h"
 
 using cactus_rt::App;
 
@@ -28,32 +28,6 @@ int main(int argc, char* argv[]) {
     }
   );
 
-  // // ***************
-  // // * Example 2.1 *
-  // // ***************
-  // // Repeatedly set desired position to force lock contention
-  // auto set_desired_positions_thread = std::thread(
-  //   [&]() {
-  //     while (true) {
-  //       const auto now = std::chrono::system_clock::now();
-  //       const auto now_millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-  //       shared_context->desired_position.Set(sin(static_cast<double>(now_millis) / 1000)); // ~6 second period
-  //     }
-  //   }
-  // );
-
-  // // ***************
-  // // * Example 2.2 *
-  // // ***************
-  // // Repeatedly get PID constants to force lock contention
-  // auto get_pid_thread = std::thread(
-  //   [&]() {
-  //     while (true) {
-  //       shared_context->pid_constants.Get();
-  //     }
-  //   }
-  // );
-
   cactus_rt::CyclicThreadConfig rt_thread_config;
   rt_thread_config.period_ns = 1'000'000;             // 1 ms loop
   rt_thread_config.SetFifoScheduler(80);              // Use FIFO scheduler with  thread priority 80
@@ -63,8 +37,7 @@ int main(int argc, char* argv[]) {
   App app;
   app.RegisterThread(rt_thread);
 
-  // TODO create different filenames per example
-  app.StartTraceSession("inverted_pendulum.perfetto");
+  app.StartTraceSession("exercise2-3.perfetto");
   app.Start();
 
   // Stop trace after 2 minutes to prevent creating large files

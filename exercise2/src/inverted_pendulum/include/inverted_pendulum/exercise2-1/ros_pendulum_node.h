@@ -6,7 +6,7 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_srvs/srv/empty.hpp>
 
-#include "inverted_pendulum/shared_context.h"
+#include "inverted_pendulum/exercise2-1/shared_context.h"
 #include "inverted_pendulum_interfaces/srv/set_desired_position.hpp"
 #include "inverted_pendulum_interfaces/srv/set_pid_constants.hpp"
 

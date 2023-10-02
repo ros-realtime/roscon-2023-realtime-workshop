@@ -1,4 +1,4 @@
-#include "inverted_pendulum/rt_thread.h"
+#include "inverted_pendulum/exercise2-1/rt_thread.h"
 
 double RtThread::ReadSensor(int64_t cycle_time) {
   auto         span = Tracer().WithSpan("ReadSensor", "app");

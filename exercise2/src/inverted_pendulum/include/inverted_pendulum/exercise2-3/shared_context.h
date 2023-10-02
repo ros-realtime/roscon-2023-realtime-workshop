@@ -8,9 +8,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 
-#include "inverted_pendulum/message_passing/data_queue.h"
-#include "inverted_pendulum/message_passing/multiple_data.h"
-#include "inverted_pendulum/message_passing/single_data.h"
+#include "inverted_pendulum/exercise2-3/message_passing/data_queue.h"
+#include "inverted_pendulum/exercise2-3/message_passing/multiple_data.h"
+#include "inverted_pendulum/exercise2-3/message_passing/single_data.h"
 
 // Shared context between the RT thread and the ROS thread
 class SharedContext {

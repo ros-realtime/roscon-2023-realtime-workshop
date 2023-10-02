@@ -1,3 +1,5 @@
+#ifndef INVERTED_PENDULUM_MULTIPLE_DATA_H_
+#define INVERTED_PENDULUM_MULTIPLE_DATA_H_
 
 #include <cactus_rt/mutex.h>
 
@@ -22,8 +24,9 @@ struct MultipleData {
 
  private:
   using mutex = cactus_rt::mutex;
-  // using mutex = std::mutex;
   mutex pid_constant_mutex_;
 
   PIDConstants pid_constants_;
 };
+
+#endif

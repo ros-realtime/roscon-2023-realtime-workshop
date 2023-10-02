@@ -1,23 +1,27 @@
 `Inverted Pendulum`
 ===================
 
-This package serves as a demo inverted pendulum. The pendulum is kept upright by a PID controller.
+These packages serves as a demo inverted pendulum. The pendulum is kept upright by a PID controller.
+
+# Basic Usage
+
+## Build
+
+Change directories to this folder and build:
+```bash
+cd exercise2
+./build.sh
+```
 
 ## Launch
 
 If your computer supports graphics, you can run the following command to start the pendulum demo with RViz:
 
 ```bash
-ros2 launch inverted_pendulum_example demo.launch.py rviz:=true
+run-example2-3.sh
 ```
 
-Instead, if you are running the simulation on a computer without graphics (ex. Raspberry Pi), use the following command to start the demo:
-
-```bash
-ros2 launch inverted_pendulum_example demo.launch.py
-```
-
-This will start the pendulum simulation without RViz. To view the pendulum, start RViz on a computer that is networked with the simulation computer:
+To view the pendulum if running on a Raspberry Pi, start RViz on a computer that is networked with the simulation computer:
 
 ```bash
 rviz2
@@ -38,7 +42,7 @@ You can interact with the inverted pendulum simulation with [ROS services](https
 
 ### Reset the simulation
 
-You can restart the pendulum simulation via the `/reset_pendulum` service. Below is an example of how to call this service from the terminal. Restarting the simulation will reset the pendulum to its initial state.
+You can restart the pendulum simulation via the `/reset_pendulum` service. Restarting the simulation will reset the pendulum to its initial state (an initial position of 0.6 rad and inital velocity of 0.0 rad/s. ). Below is an example of how to call this service from the terminal.
 
 
 ```bash
@@ -59,4 +63,29 @@ You can change the PID constants via the `/set_PID_constants` service. Below is 
 
 ```bash
 ros2 service call /set_PID_constants inverted_pendulum_interfaces/srv/SetPIDConstants "{kp: 0, ki: 0, kd: 0}"
+```
+
+# Example 2-1
+
+First, run the example:
+
+```bash
+run-example2-1.sh
+```
+
+
+# Example 2-2
+
+First, run the example:
+
+```bash
+run-example2-2.sh
+```
+
+# Example 2-3
+
+First, run the example:
+
+```bash
+run-example2-3.sh
 ```

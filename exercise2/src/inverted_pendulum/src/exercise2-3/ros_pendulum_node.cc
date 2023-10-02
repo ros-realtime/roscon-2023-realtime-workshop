@@ -1,5 +1,5 @@
 
-#include "inverted_pendulum/ros_pendulum_node.h"
+#include "inverted_pendulum/exercise2-3/ros_pendulum_node.h"
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <chrono>
@@ -26,6 +26,7 @@ RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<
   set_PID_constants_service_ = this->create_service<inverted_pendulum_interfaces::srv::SetPIDConstants>(
     "set_PID_constants", std::bind(&RosPendulumNode::SetPIDConstants, this, _1, _2)
   );
+  RCLCPP_INFO(this->get_logger(), "Started exercise 2-1");
 }
 
 void RosPendulumNode::TimerCallback() {

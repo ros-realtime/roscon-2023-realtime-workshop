@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "inverted_pendulum/shared_context.h"
+#include "inverted_pendulum/exercise2-3/shared_context.h"
 
 using cactus_rt::CyclicThread;
 
