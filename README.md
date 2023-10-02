@@ -155,6 +155,7 @@ Latency testing complete. Trace file available at: exercise1.perfetto
 ```
 
 **Known issues - docker proxy**
+
 In case the above commands like `git submodule update` failed because of missing internet connection, you might need to configure manually the proxy for the docker container, especially if you are in a corporate network. See this [docker documentation](https://docs.docker.com/network/proxy/) or contact your local IT service to setup the proxy correctly.
 
 Alternativly, you could execute those `git submodule` commands in the `roscon-2023-realtime-workshop` repository folder on host machine and not in docker container. Because this repository folder is mounted in the docker container, this would also work.
