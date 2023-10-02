@@ -41,7 +41,7 @@ void StopTracing() {
 }
 
 int main() {
-  StartTracing("camera_demo", "camera_demo.json");
+  StartTracing("camera_demo", "camera_demo.perfetto3");
 
   rclcpp::init(0, nullptr);
   auto publisher_node = std::make_shared<PublisherNode>();
