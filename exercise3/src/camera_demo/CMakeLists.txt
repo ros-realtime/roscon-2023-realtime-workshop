@@ -13,9 +13,6 @@ find_package(ament_cmake REQUIRED)
 
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(cv_bridge REQUIRED)
-find_package(image_transport REQUIRED)
-find_package(OpenCV REQUIRED)
 
 # Integrated cactus-rt dependencies for the workshop
 add_subdirectory(
@@ -33,16 +30,12 @@ add_executable(publisher_node src/publisher_node.cpp)
 ament_target_dependencies(publisher_node
   rclcpp
   sensor_msgs
-  cv_bridge
-  image_transport
 )
 
 add_executable(sensor_node src/sensor_node.cpp)
 ament_target_dependencies(sensor_node
   rclcpp
   sensor_msgs
-  cv_bridge
-  image_transport
 )
 target_link_libraries(sensor_node
   cactus_rt
@@ -52,8 +45,6 @@ add_executable(actuation_node src/actuation_node.cpp)
 ament_target_dependencies(actuation_node
   rclcpp
   sensor_msgs
-  cv_bridge
-  image_transport
 )
 target_link_libraries(actuation_node
   cactus_rt

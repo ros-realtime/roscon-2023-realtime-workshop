@@ -1,5 +1,0 @@
-repositories:
-  rclcpp:
-    type: git
-    url: https://github.com/nightduck/rclcpp
-    version: workshop_executor
