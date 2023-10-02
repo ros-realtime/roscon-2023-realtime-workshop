@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "rclcpp/experimental/fifo_sched.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "camera_demo/publisher_node.hpp"
@@ -21,6 +22,11 @@ PublisherNode::PublisherNode() : Node("publisher_node")
 
   // Create a timer that calls the publish function every 33ms
   timer_ = this->create_wall_timer(33ms, std::bind(&PublisherNode::publish, this));
+
+  // TODO: Omit this in the exercise
+  sched_param sp;
+  sp.sched_priority = HIGH;
+  timer_->sched_param(sp);
 }
 
 PublisherNode::~PublisherNode() {
