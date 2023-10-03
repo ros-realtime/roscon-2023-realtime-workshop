@@ -3,7 +3,7 @@
 <package format="3">
   <name>camera_demo_3_1</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>ROSCon workshop excercise 3_1</description>
   <maintainer email="shuhao@shuhaowu.com">user</maintainer>
   <license>TODO: License declaration</license>
 
