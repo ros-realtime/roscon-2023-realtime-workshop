@@ -61,7 +61,7 @@ The exact version of Docker may be different than the above output.
 ### Getting the image BEFORE the workshop (highly recommended)
 
 1. Download the image file from [the latest release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest). The file is called `image.tar.gz`.
-2. Clone [roscon-2023-realtime-workshop](https://github.com/ros-realtime/roscon-2023-realtime-workshop) repository.
+2. Clone the [roscon-2023-realtime-workshop](https://github.com/ros-realtime/roscon-2023-realtime-workshop) repository with `--recursive` option: `git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git`
 3. `cd` into the `roscon-2023-realtime-workshop` repository.
 4. `docker/import path/to/downloaded/image.tar.gz`.
 
@@ -133,11 +133,6 @@ After logging into the Docker container, you should check everything works:
 After logging into the Docker container:
 
 ```console
-$ git submodule init
-$ git submodule update
-```
-
-```console
 $ cd /code/exercise1 && colcon build
 $ cd /code/exercise2 && colcon build
 $ cd /code/exercise3 && colcon build
@@ -153,12 +148,6 @@ $ install/latency_tester/bin/latency_tester
 Testing latency for 10 seconds with 2 threads...
 Latency testing complete. Trace file available at: exercise1.perfetto
 ```
-
-**Known issues - docker proxy**
-
-In case the above commands like `git submodule update` failed because of missing internet connection, you might need to configure manually the proxy for the docker container, especially if you are in a corporate network. See this [docker documentation](https://docs.docker.com/network/proxy/) or contact your local IT service to setup the proxy correctly.
-
-Alternativly, you could execute those `git submodule` commands in the `roscon-2023-realtime-workshop` repository folder on host machine and not in docker container. Because this repository folder is mounted in the docker container, this would also work.
 
 **Check rviz2 is working**
 
