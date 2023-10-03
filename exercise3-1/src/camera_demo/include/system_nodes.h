@@ -21,16 +21,7 @@ class ImagePublisherNode : public rclcpp::Node {
   void TimerCallback();
 };
 
-class ActuationNode : public rclcpp::Node {
-  rclcpp::Subscription<std_msgs::msg::Int64>::SharedPtr subscription_;
-
-  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_;
-
- public:
-  explicit ActuationNode(std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer);
-
- private:
-  void MessageCallback(const std_msgs::msg::Int64::SharedPtr published_at_timestamp);
-};
+void StartImagePublisherNode();
+void JoinImagePublisherNode();
 
 #endif

@@ -2,6 +2,8 @@
 
 #include <cactus_rt/utils.h>
 
+#include <string>
+
 #include "utils.h"
 
 using camera_demo_interfaces::msg::FakeImage;
@@ -25,26 +27,30 @@ void ImagePublisherNode::TimerCallback() {
   publisher_->publish(img);
 }
 
-ActuationNode::ActuationNode(
-  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer
-) : Node("actuation"), tracer_(tracer) {
-  subscription_ = this->create_subscription<std_msgs::msg::Int64>(
-    "/actuation",
-    10,
-    std::bind(&ActuationNode::MessageCallback, this, std::placeholders::_1)
-  );
+std::thread                                                thr;
+std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> executor;
+ImagePublisherNode::SharedPtr                              node;
+
+void StartImagePublisherNode() {
+  // Has to be an unique pointer as we need to initialize it after rclcpp::init called in main.
+  executor = std::make_unique<rclcpp::executors::SingleThreadedExecutor>();
+
+  node = std::make_shared<ImagePublisherNode>(60.0);
+  executor->add_node(node);
+
+  thr = std::thread([] {
+    sched_param sch;
+    sch.sched_priority = 90;
+    if (sched_setscheduler(0, SCHED_FIFO, &sch) == -1) {
+      throw std::runtime_error{std::string("failed to set scheduler: ") + std::strerror(errno)};
+    }
+
+    executor->spin();
+  });
 }
 
-void ActuationNode::MessageCallback(const std_msgs::msg::Int64::SharedPtr published_at_timestamp) {
-  auto now = cactus_rt::NowNs();
-
-  // A hack to show the end to end latency, from the moment it was published to
-  // the moment it is received by this node.
-  tracer_->StartSpan("MessageProcessing", nullptr, published_at_timestamp->data);
-  tracer_->EndSpan(now);
-
-  {
-    auto span = tracer_->WithSpan("Actuation");
-    WasteTime(std::chrono::microseconds(150));
-  }
+void JoinImagePublisherNode() {
+  thr.join();
+  executor = nullptr;  // Delete the executor.
+  node = nullptr;      // Delete the node, otherwise on shutdown there will be a segfault.
 }

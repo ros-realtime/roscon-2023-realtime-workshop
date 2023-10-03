@@ -17,7 +17,7 @@ find_package(camera_demo_interfaces REQUIRED)
 add_executable(camera_demo
   src/main.cc
   src/system_nodes.cc
-  src/camera_processing_nodes.cc
+  src/application_nodes.cc
   src/tracing.cc
 )
 

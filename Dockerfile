@@ -16,6 +16,7 @@ RUN set -xe; \
       sudo \
       git \
       stress-ng \
+      gdb \
     ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*;
