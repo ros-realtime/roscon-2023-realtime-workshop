@@ -26,7 +26,7 @@ RosPendulumNode::RosPendulumNode(const std::string& name, const std::shared_ptr<
   set_PID_constants_service_ = this->create_service<inverted_pendulum_interfaces::srv::SetPIDConstants>(
     "set_PID_constants", std::bind(&RosPendulumNode::SetPIDConstants, this, _1, _2)
   );
-  RCLCPP_INFO(this->get_logger(), "Started exercise 2-1");
+  RCLCPP_INFO(this->get_logger(), "Started exercise 2-3");
 }
 
 void RosPendulumNode::TimerCallback() {

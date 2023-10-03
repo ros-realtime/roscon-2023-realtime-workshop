@@ -15,6 +15,7 @@ RUN set -xe; \
       # Utility tools
       sudo \
       git \
+      rsync \
       stress-ng \
     ; \
     apt-get clean; \

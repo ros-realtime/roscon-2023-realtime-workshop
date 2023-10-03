@@ -31,6 +31,7 @@ struct DataQueue {
     WasteTime(std::chrono::microseconds(200));
     return queue_.try_dequeue(data);
   }
+
   void WasteTime(std::chrono::microseconds duration) {
     const auto start = cactus_rt::NowNs();
     auto       duration_ns = duration.count() * 1000;

@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
   rt_thread_config.tracer_config.trace_sleep = true;  // Trace the sleep duration
   auto rt_thread = std::make_shared<RtThread>(shared_context, rt_thread_config);
 
-  App app;
+  App app("exercise2-1");
   app.RegisterThread(rt_thread);
 
   app.StartTraceSession("exercise2-1.perfetto");

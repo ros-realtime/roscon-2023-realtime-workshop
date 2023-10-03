@@ -21,21 +21,6 @@ If your computer supports graphics, you can run the following command to start t
 run-example2-3.sh
 ```
 
-To view the pendulum if running on a Raspberry Pi, start RViz on a computer that is networked with the simulation computer:
-
-```bash
-rviz2
-```
-
-Add a RobotModel display:
-
-![Add a RobotModel display](./docs/RobotModel.png)
-
-
-Next, set the description topic to `/robot_description`. You should see the pendulum; it should look like this:
-
-![Add a RobotModel display](./docs/SetRobotDescription.png)
-
 ## Interaction
 
 You can interact with the inverted pendulum simulation with [ROS services](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Services/Understanding-ROS2-Services.html).
