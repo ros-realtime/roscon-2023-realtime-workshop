@@ -61,8 +61,8 @@ The exact version of Docker may be different than the above output.
 ### Getting the image BEFORE the workshop (highly recommended)
 
 1. Download the image file from [the latest release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest). The file is called `image.tar.gz`.
-2. Clone this repository.
-3. `cd` into this repository.
+2. Clone the [roscon-2023-realtime-workshop](https://github.com/ros-realtime/roscon-2023-realtime-workshop) repository with `--recursive` option: `git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git`.
+3. `cd` into the `roscon-2023-realtime-workshop` repository.
 4. `docker/import path/to/downloaded/image.tar.gz`.
 
 This should import the Docker image with a name of `roscon-2023-realtime-workshop`.
