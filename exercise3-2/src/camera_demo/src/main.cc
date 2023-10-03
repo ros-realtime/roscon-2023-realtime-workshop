@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
   auto camera_processing_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("camera_processing");
   auto camera_processing_node = std::make_shared<CameraProcessingNode>(camera_processing_tracer);
 
-  StartTracing("camera_demo_3_1", "exercise3-1.perfetto");
+  StartTracing("camera_demo_3_2", "exercise3-2.perfetto");
   RegisterThreadTracer(actuation_tracer);
   RegisterThreadTracer(camera_processing_tracer);
 
