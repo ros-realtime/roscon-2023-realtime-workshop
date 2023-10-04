@@ -8,20 +8,20 @@
 
 #include "camera_demo_interfaces/msg/fake_image.hpp"
 
-// Publishes at configurable frequency, always with real-time priority.
+// Publishes at configurable frequency
 class ImagePublisherNode : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
-
+  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_;
+  int64_t last_image_publisher_timepoint;
   rclcpp::Publisher<camera_demo_interfaces::msg::FakeImage>::SharedPtr publisher_;
 
  public:
-  explicit ImagePublisherNode(double frequency_hz = 60.0);
+  explicit ImagePublisherNode(
+    std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer,
+    double frequency_hz = 60.0);
 
  private:
   void TimerCallback();
 };
-
-void StartImagePublisherNode();
-void JoinImagePublisherNode();
 
 #endif
