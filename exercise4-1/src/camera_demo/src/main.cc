@@ -8,7 +8,6 @@ int main(int argc, char** argv) {
   // initialization of ROS and DDS middleware
   rclcpp::init(argc, argv);
 
-  // StartImagePublisherNode();
   auto camera_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("camera");
   auto camera_node = std::make_shared<ImagePublisherNode>(camera_tracer, 60.0);
 
