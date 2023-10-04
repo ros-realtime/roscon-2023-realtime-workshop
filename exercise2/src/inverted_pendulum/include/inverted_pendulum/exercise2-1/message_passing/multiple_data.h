@@ -5,6 +5,9 @@
 
 #include <mutex>
 
+// Exercise 2-1 uses single_data.h
+// Do not modify this file for exercise 2-1
+
 struct PIDConstants {
   double kp;  // Proportional gain
   double ki;  // Integral gain
@@ -24,7 +27,6 @@ struct MultipleData {
 
  private:
   using mutex = cactus_rt::mutex;
-  // using mutex = std::mutex;
   mutex pid_constant_mutex_;
 
   PIDConstants pid_constants_;
