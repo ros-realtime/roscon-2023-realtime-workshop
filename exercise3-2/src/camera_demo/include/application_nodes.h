@@ -12,6 +12,7 @@ class CameraProcessingNode : public rclcpp::Node {
   std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_object_detector_;
   std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_data_logger_;
 
+  rclcpp::CallbackGroup::SharedPtr                                        callback_group_;
   rclcpp::Subscription<camera_demo_interfaces::msg::FakeImage>::SharedPtr subscription_object_detector_;
   rclcpp::Subscription<camera_demo_interfaces::msg::FakeImage>::SharedPtr subscription_data_logger_;
   rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr                      publisher_;
