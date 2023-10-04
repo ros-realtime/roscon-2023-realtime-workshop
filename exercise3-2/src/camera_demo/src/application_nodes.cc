@@ -18,16 +18,22 @@ CameraProcessingNode::CameraProcessingNode(
   std::shared_ptr<ThreadTracer> tracer_object_detector,
   std::shared_ptr<ThreadTracer> tracer_data_logger
 ) : Node("obj_detect"), tracer_object_detector_(tracer_object_detector), tracer_data_logger_(tracer_data_logger) {
+  callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+  rclcpp::SubscriptionOptions subscription_options;
+  subscription_options.callback_group = callback_group_;
+
   subscription_data_logger_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1),
+    subscription_options
   );
 
   subscription_object_detector_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1),
+    subscription_options
   );
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
@@ -47,8 +53,8 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
   {
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
-    // Pretend it takes 4000 ms to do object detection.
-    WasteTime(std::chrono::microseconds(4000));
+    // Pretend it takes 3ms to do object detection.
+    WasteTime(std::chrono::microseconds(3000));
 
     // Send a signal to the downstream actuation node
     std_msgs::msg::Int64 msg;
@@ -66,8 +72,8 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
   {
     auto span = tracer_data_logger_->WithSpan("DataLogger");
 
-    // Assume it takes 1ms to serialize the data which is all on the CPU
-    WasteTime(std::chrono::microseconds(1000));
+    // Assume it takes 6ms to serialize the data which is all on the CPU
+    WasteTime(std::chrono::microseconds(6000));
 
     // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
     std::this_thread::sleep_for(std::chrono::microseconds(1000));
