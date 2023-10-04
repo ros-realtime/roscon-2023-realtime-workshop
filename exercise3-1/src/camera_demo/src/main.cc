@@ -21,11 +21,7 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-
-  executor.add_node(camera_processing_node);
-  executor.add_node(actuation_node);
-  executor.spin();
+  // TODO: Create executor, add nodes to it, and call spin() on executor
 
   rclcpp::shutdown();
   StopTracing();
