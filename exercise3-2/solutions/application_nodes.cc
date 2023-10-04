@@ -32,7 +32,6 @@ CameraProcessingNode::CameraProcessingNode(
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
 
-  // TODO: Omit this in the exercise
   sched_param sp;
   sp.sched_priority = HIGH;
   subscription_object_detector_->sched_param(sp);
@@ -83,7 +82,6 @@ ActuationNode::ActuationNode(
     std::bind(&ActuationNode::MessageCallback, this, std::placeholders::_1)
   );
 
-  // TODO: Omit this in the exercise
   sched_param sp;
   sp.sched_priority = HIGH;
   subscription_->sched_param(sp);
