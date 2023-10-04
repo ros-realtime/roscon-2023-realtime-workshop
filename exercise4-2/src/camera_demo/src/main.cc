@@ -12,14 +12,16 @@ int main(int argc, char** argv) {
   auto actuation_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("actuation");
   auto actuation_node = std::make_shared<ActuationNode>(actuation_tracer);
 
-  auto camera_processing_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("camera_processing");
-  auto camera_processing_node = std::make_shared<CameraProcessingNode>(camera_processing_tracer);
+  auto object_detector_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("object_detector_callback");
+  auto data_logger_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("data_logger_callback");
+  auto camera_processing_node = std::make_shared<CameraProcessingNode>(object_detector_tracer, data_logger_tracer);
   auto data_logger_group = camera_processing_node->get_besteffort_cbg();
   auto object_detector_group = camera_processing_node->get_realtime_cbg();
 
   StartTracing("camera_demo_4_2", "exercise4-2.perfetto");
   RegisterThreadTracer(actuation_tracer);
-  RegisterThreadTracer(camera_processing_tracer);
+  RegisterThreadTracer(object_detector_tracer);
+  RegisterThreadTracer(data_logger_tracer);
 
   rclcpp::executors::SingleThreadedExecutor real_time_executor;
   rclcpp::executors::SingleThreadedExecutor best_effort_executor;
@@ -27,7 +29,7 @@ int main(int argc, char** argv) {
   best_effort_executor.add_callback_group(data_logger_group, camera_processing_node->get_node_base_interface());
   real_time_executor.add_callback_group(object_detector_group, camera_processing_node->get_node_base_interface());
   real_time_executor.add_node(actuation_node);
-  
+
   // Launch best effort thread
   std::thread best_effort_thread([&best_effort_executor]() {
     best_effort_executor.spin();

@@ -19,7 +19,11 @@
   "capAdd": [
     "SYS_NICE",
   ],
-  "forwardPorts": [3100],
+  "workspaceFolder": "/code",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/code,type=bind",
+  "forwardPorts": [
+    3100
+  ],
   "overrideCommand": false,
   "containerEnv": {
     "DISPLAY": "${localEnv:DISPLAY}",

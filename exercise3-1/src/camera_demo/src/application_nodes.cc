@@ -6,8 +6,9 @@ using cactus_rt::tracing::ThreadTracer;
 using camera_demo_interfaces::msg::FakeImage;
 
 CameraProcessingNode::CameraProcessingNode(
-  std::shared_ptr<ThreadTracer> tracer
-) : Node("obj_detect"), tracer_(tracer) {
+  std::shared_ptr<ThreadTracer> tracer_object_detector,
+  std::shared_ptr<ThreadTracer> tracer_data_logger
+) : Node("obj_detect"), tracer_object_detector_(tracer_object_detector), tracer_data_logger_(tracer_data_logger) {
   subscription_data_logger_ = this->create_subscription<FakeImage>(
     "/image",
     10,
@@ -26,11 +27,11 @@ CameraProcessingNode::CameraProcessingNode(
 void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr image) {
   // A hack to trace the message passing delay between publisher and this node
   auto now = cactus_rt::NowNs();
-  tracer_->StartSpan("MessageDelay", nullptr, image->published_at_monotonic_nanos);
-  tracer_->EndSpan(now);
+  tracer_object_detector_->StartSpan("MessageDelay", nullptr, image->published_at_monotonic_nanos);
+  tracer_object_detector_->EndSpan(now);
 
   {
-    auto span = tracer_->WithSpan("ObjectDetect");
+    auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
     // Pretend it takes 4000 ms to do object detection.
     WasteTime(std::chrono::microseconds(4000));
@@ -43,13 +44,19 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
 }
 
 void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) {
-  auto span = tracer_->WithSpan("DataLogger");
+  auto now = cactus_rt::NowNs();
+  tracer_data_logger_->StartSpan("MessageDelay", nullptr, image->published_at_monotonic_nanos);
+  tracer_data_logger_->EndSpan(now);
 
-  // Assume it takes 1ms to serialize the data which is all on the CPU
-  WasteTime(std::chrono::microseconds(1000));
+  {
+    auto span = tracer_data_logger_->WithSpan("DataLogger");
 
-  // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
-  std::this_thread::sleep_for(std::chrono::microseconds(1000));
+    // Assume it takes 1ms to serialize the data which is all on the CPU
+    WasteTime(std::chrono::microseconds(1000));
+
+    // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
+  }
 }
 
 ActuationNode::ActuationNode(

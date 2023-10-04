@@ -12,12 +12,14 @@ int main(int argc, char** argv) {
   auto actuation_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("actuation");
   auto actuation_node = std::make_shared<ActuationNode>(actuation_tracer);
 
-  auto camera_processing_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("camera_processing");
-  auto camera_processing_node = std::make_shared<CameraProcessingNode>(camera_processing_tracer);
+  auto object_detector_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("object_detector_callback");
+  auto data_logger_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("data_logger_callback");
+  auto camera_processing_node = std::make_shared<CameraProcessingNode>(object_detector_tracer, data_logger_tracer);
 
   StartTracing("camera_demo_3_1", "exercise3-1.perfetto");
   RegisterThreadTracer(actuation_tracer);
-  RegisterThreadTracer(camera_processing_tracer);
+  RegisterThreadTracer(object_detector_tracer);
+  RegisterThreadTracer(data_logger_tracer);
 
   rclcpp::executors::SingleThreadedExecutor executor;
 

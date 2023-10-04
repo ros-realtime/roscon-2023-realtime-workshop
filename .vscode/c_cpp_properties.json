@@ -35,6 +35,18 @@
       "cStandard": "gnu11",
       "cppStandard": "gnu++17",
       "compileCommands": "${workspaceFolder}/exercise3-1/build/compile_commands.json"
+    },
+    {
+      "includePath": [
+        "/opt/ros/humble/include/**",
+        "/usr/include/**"
+      ],
+      "name": "Exercise 4-2",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++17",
+      "compileCommands": "${workspaceFolder}/exercise4-2/build/compile_commands.json"
     }
   ],
   "version": 4

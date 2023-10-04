@@ -9,16 +9,21 @@
 #include "camera_demo_interfaces/msg/fake_image.hpp"
 
 class CameraProcessingNode : public rclcpp::Node {
-  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_;
+  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_object_detector_;
+  std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_data_logger_;
 
-  rclcpp::CallbackGroup::SharedPtr realtime_group_;
-  rclcpp::CallbackGroup::SharedPtr besteffort_group_;
+  rclcpp::CallbackGroup::SharedPtr                                        realtime_group_;
+  rclcpp::CallbackGroup::SharedPtr                                        besteffort_group_;
   rclcpp::Subscription<camera_demo_interfaces::msg::FakeImage>::SharedPtr subscription_object_detector_;
   rclcpp::Subscription<camera_demo_interfaces::msg::FakeImage>::SharedPtr subscription_data_logger_;
   rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr                      publisher_;
 
  public:
-  explicit CameraProcessingNode(std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer);
+  CameraProcessingNode(
+    std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_object_detector,
+    std::shared_ptr<cactus_rt::tracing::ThreadTracer> tracer_data_logger
+  );
+
   rclcpp::CallbackGroup::SharedPtr get_realtime_cbg();
   rclcpp::CallbackGroup::SharedPtr get_besteffort_cbg();
 
