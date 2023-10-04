@@ -46,5 +46,6 @@ int main(int argc, char** argv) {
   StopTracing();
 
   JoinImagePublisherNode();
+  best_effort_thread.join();
   return 0;
 }
