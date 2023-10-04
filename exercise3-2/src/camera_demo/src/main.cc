@@ -1,6 +1,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include "application_nodes.h"
+#include "rclcpp/executor.hpp"
 #include "system_nodes.h"
 #include "tracing.h"
 
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  rclcpp::executors::MultiThreadedExecutor executor;
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
 
   executor.add_node(camera_processing_node);
   executor.add_node(actuation_node);
