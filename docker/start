@@ -9,7 +9,7 @@ name=roscon-2023-realtime-workshop
 set -x
 
 docker stop $name
-docker rm $name
+docker rm -f $name
 docker run \
   -d \
   --device=/dev/dri \
