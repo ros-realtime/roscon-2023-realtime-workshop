@@ -84,5 +84,17 @@ cd exercise2
 colcon build
 cd ..
 
+cd exercise3-1
+colcon build
+cd ..
+
+cd exercise3-2
+colcon build
+cd ..
+
+cd exercise4-2
+colcon build
+cd ..
+
 cd ..
 chown -R ubuntu:ubuntu repo
