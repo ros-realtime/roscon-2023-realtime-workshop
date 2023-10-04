@@ -15,16 +15,27 @@ using camera_demo_interfaces::msg::FakeImage;
 CameraProcessingNode::CameraProcessingNode(
   std::shared_ptr<ThreadTracer> tracer
 ) : Node("obj_detect"), tracer_(tracer) {
+  realtime_group_ = this->create_callback_group(
+    rclcpp::CallbackGroupType::MutuallyExclusive);
+  besteffort_group_ = this->create_callback_group(
+    rclcpp::CallbackGroupType::MutuallyExclusive);
+
+  rclcpp::SubscriptionOptions data_logging_options;
+  data_logging_options.callback_group = besteffort_group_;
   subscription_data_logger_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1),
+    data_logging_options
   );
 
+  rclcpp::SubscriptionOptions obj_det_options;
+  obj_det_options.callback_group = realtime_group_;
   subscription_object_detector_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1),
+    obj_det_options
   );
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
