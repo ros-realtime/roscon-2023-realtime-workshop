@@ -11,12 +11,6 @@ colcon() {
     return 1
   fi
 
-  if [ "$(pwd)" == "$CONTAINER_WORKSPACE_FOLDER" ]; then
-    echo "ERROR: Please do not run colcon commands in $CONTAINER_WORKSPACE_FOLDER." >&2
-    echo "       Instead, run it in one of the exercise directories." >&2
-    return 1
-  fi
-
   /usr/bin/colcon "$@"
 
   # Make the attendees' lives easier?? Or maybe worse.
@@ -25,4 +19,25 @@ colcon() {
   #     source install/setup.bash
   #   fi
   # fi
+}
+
+upload-to-pi() {
+  pushd /code
+  rsync \
+    --rsh "/usr/bin/sshpass -p ubuntu ssh -o StrictHostKeyChecking=no -l ubuntu" \
+    -avr \
+    --no-t \
+    --checksum \
+    --ignore-times \
+    --exclude '.git' \
+    --exclude 'docker' \
+    --exclude 'vendor' \
+    --exclude 'base-image' \
+    --exclude '*/build/' \
+    --exclude '*/log/' \
+    --exclude '*/install/' \
+    --exclude 'imgs' \
+    ./ \
+    ubuntu@192.168.10.1:/home/ubuntu/repo
+  popd
 }

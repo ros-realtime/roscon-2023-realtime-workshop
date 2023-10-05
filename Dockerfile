@@ -57,12 +57,14 @@ RUN set -xe; \
       rsync \
       stress-ng \
       gdb \
+      sshpass \
     ; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*;
 
 COPY docker/bin /opt/bin
 COPY docker/profile.d/custom.sh /etc/profile.d/custom.sh
+COPY docker/rpi_ssh.conf /etc/ssh/ssh_config.d/rpi_ssh.conf
 COPY prebuilts/perfetto /opt/perfetto
 
 ENTRYPOINT ["/opt/bin/entrypoint"]
