@@ -8,4 +8,4 @@ set -xe
 cd $DOCKER_DIR/..
 docker build -t $IMAGE_NAME .
 
-docker save $IMAGE_NAME | pv | gzip >docker/image.tar.gz
+docker save $IMAGE_NAME | pv | gzip >docker/docker-image.tar.gz

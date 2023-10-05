@@ -58,28 +58,18 @@ The exact version of Docker may be different than the above output.
 
 [docker-install]: https://docs.docker.com/engine/install/ubuntu/
 
-### Getting the image BEFORE the workshop (highly recommended)
+### Getting the image BEFORE the workshop
 
-1. Download the image file from [the latest release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest). The file is called `image.tar.gz`.
+1. Download the image file from [the latest release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest). The file is called `docker-image.tar.gz`.
 2. Clone the [roscon-2023-realtime-workshop](https://github.com/ros-realtime/roscon-2023-realtime-workshop) repository with `--recursive` option: `git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git`.
 3. `cd` into the `roscon-2023-realtime-workshop` repository.
-4. `docker/import path/to/downloaded/image.tar.gz`.
+4. `docker/import path/to/downloaded/docker-image.tar.gz`.
 
 This should import the Docker image with a name of `roscon-2023-realtime-workshop`.
 
-### Getting the image DURING the workshop (as a last resort)
-
-If you didn't get the image before the workshop, we will offer a way to get the
-image during the workshop without access to internet. **However, try to do the
-step above as the network bandwidth during the workshop is limited!**.
-
-1. Connect your laptop to Raspberry Pi via Ethernet.
-2. Ensure the Raspberry Pi is powered on.
-3. You should be able to `ping 192.168.10.1` once the Pi is powered on and it is connected to the ethernet.
-4. `cd` into this repository.
-5. Run `docker/import`. This should automatically download and import the Docker image from the Ethernet-connected Raspberry Pi.
-
 ### Starting the Docker container
+
+**If you would like to use VS Code and its dev container system, you can skip this section and go directly to [Using Visual Studio Code](#using-visual-studio-code).**
 
 After importing the Docker image, you can start the Docker container via the
 special shell file [`docker/start`](docker/start):
@@ -87,7 +77,7 @@ special shell file [`docker/start`](docker/start):
 1. `cd` into this repository.
 2. `docker/start`
 
-This should start the Docker container and it wll mount this repository into the
+This should start the Docker container and it will mount this repository into the
 `/code` directory inside the container. As a result, changes to the repository
 in the host will be reflected in the container.
 
@@ -133,10 +123,12 @@ After logging into the Docker container, you should check everything works:
 After logging into the Docker container:
 
 ```console
-$ cd /code/exercise1 && colcon build
-$ cd /code/exercise2 && colcon build
-$ cd /code/exercise3 && colcon build
-$ cd /code/exercise4 && colcon build
+$ cd /code/exercise1 && colcon build && cd ..
+$ cd /code/exercise2 && colcon build && cd ..
+$ cd /code/exercise3-1 && colcon build && cd ..
+$ cd /code/exercise3-2 && colcon build && cd ..
+$ cd /code/exercise4-1 && colcon build && cd ..
+$ cd /code/exercise4-2 && colcon build && cd ..
 ```
 
 Make sure these all build. Then make sure at least exercise 1 runs (which takes
@@ -148,6 +140,9 @@ $ install/latency_tester/bin/latency_tester
 Testing latency for 10 seconds with 2 threads...
 Latency testing complete. Trace file available at: exercise1.perfetto
 ```
+
+You can load the `exercise1.perfetto` file in the trace viewer that you checked
+above and see some data being plotted.
 
 **Check rviz2 is working**
 
@@ -161,16 +156,23 @@ The usual rviz2 GUI window should show up if all is well.
 
 ### Using Visual Studio Code
 
-If you like to use VS code for development, we recommend the [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack), which enables the dev container system.
+If you like to use VS code for development, you must install the [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack), which enables the dev container system.
 
-Specifically, this repository contains a [`.devcontainer`](.devcontainer) setup.
-However, this setup relies on the image imported above using the `docker/import`
-script. So if you haven't performed the above and launched VS code in this
-repository with the dev container, it will result in an error.
+This repository contains a [`.devcontainer`](.devcontainer) setup. This setup
+relies on the image imported above using the `docker/import` script. So if you
+haven't performed the [image import
+step](#getting-the-image-before-the-workshop-highly-recommended), launching VS
+code with dev containers will not work as it will fail to find the image.
 
-To use VS code with dev container, perform the Docker importing steps above and
-then simply open VS code with dev container in this repository. Everything
-should just work after that.
+Once you [imported the image](#getting-the-image-before-the-workshop-highly-recommended), you can simply open VS code with dev containers in this repository. You can use the VS code terminal or use the `.devcontainer/shell` script to login to the container. All above features should work and you should check.
+
+**Getting IntelliSense to work**
+
+To get IntelliSense to work with the C++ extension, you must select the appropriate build configuration for each exercise with the button on the bottom right side of your status bar, as indicated by the following screenshot:
+
+![](imgs/vscode.png)
+
+You also have to build the code for that exercise at least once via `colcon build`. Sometimes, a Reload Window command is needed (CTRL+P -> `Developer: Reload Window`) to make IntelliSense work fully.
 
 Workshop setup for the Raspberry Pi 4
 -------------------------------------
