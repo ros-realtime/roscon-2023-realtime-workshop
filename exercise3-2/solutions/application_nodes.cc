@@ -18,28 +18,23 @@ CameraProcessingNode::CameraProcessingNode(
   std::shared_ptr<ThreadTracer> tracer_object_detector,
   std::shared_ptr<ThreadTracer> tracer_data_logger
 ) : Node("obj_detect"), tracer_object_detector_(tracer_object_detector), tracer_data_logger_(tracer_data_logger) {
-  callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
-  rclcpp::SubscriptionOptions subscription_options;
-  subscription_options.callback_group = callback_group_;
-
   subscription_data_logger_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1),
-    subscription_options
+    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1)
   );
 
   subscription_object_detector_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1),
-    subscription_options
+    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1)
   );
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
 
-  // TODO: Set the object detecting subscription to high priority
-  //       Look at the actuation node for example code
+  sched_param sp;
+  sp.sched_priority = HIGH;
+  subscription_object_detector_->sched_param(sp);
 }
 
 void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr image) {
@@ -51,8 +46,8 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
   {
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
-    // Pretend it takes 3ms to do object detection.
-    WasteTime(std::chrono::microseconds(3000));
+    // Pretend it takes 4000 ms to do object detection.
+    WasteTime(std::chrono::microseconds(4000));
 
     // Send a signal to the downstream actuation node
     std_msgs::msg::Int64 msg;
@@ -70,8 +65,8 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
   {
     auto span = tracer_data_logger_->WithSpan("DataLogger");
 
-    // Assume it takes 6ms to serialize the data which is all on the CPU
-    WasteTime(std::chrono::microseconds(6000));
+    // Assume it takes 1ms to serialize the data which is all on the CPU
+    WasteTime(std::chrono::microseconds(1000));
 
     // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
     std::this_thread::sleep_for(std::chrono::microseconds(1000));
@@ -87,7 +82,6 @@ ActuationNode::ActuationNode(
     std::bind(&ActuationNode::MessageCallback, this, std::placeholders::_1)
   );
 
-  // Set actuation node to high priority
   sched_param sp;
   sp.sched_priority = HIGH;
   subscription_->sched_param(sp);

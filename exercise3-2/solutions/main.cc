@@ -16,13 +16,16 @@ int main(int argc, char** argv) {
   auto data_logger_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("data_logger_callback");
   auto camera_processing_node = std::make_shared<CameraProcessingNode>(object_detector_tracer, data_logger_tracer);
 
-  StartTracing("camera_demo_3_1", "exercise3-1.perfetto");
+  StartTracing("camera_demo_3_2", "exercise3-2.perfetto");
   RegisterThreadTracer(actuation_tracer);
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  // TODO: Create executor, add two nodes to it, and call spin() on executor
-  //       Find example code here: https://docs.ros.org/en/foxy/Concepts/About-Executors.html#basic-use
+  rclcpp::executors::MultiThreadedExecutor executor;
+
+  executor.add_node(camera_processing_node);
+  executor.add_node(actuation_node);
+  executor.spin();
 
   rclcpp::shutdown();
   StopTracing();
