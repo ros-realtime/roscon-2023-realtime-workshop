@@ -5,6 +5,9 @@
 
 #include <mutex>
 
+// Exercise 2-3 uses data_queue.h
+// Do not modify this file for exercise 2-3
+
 struct PIDConstants {
   double kp;  // Proportional gain
   double ki;  // Integral gain

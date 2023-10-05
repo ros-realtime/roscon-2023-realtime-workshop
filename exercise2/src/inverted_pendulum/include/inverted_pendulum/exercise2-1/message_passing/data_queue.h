@@ -6,6 +6,9 @@
 #include <mutex>
 #include <queue>
 
+// Exercise 2-1 uses single_data.h
+// Do not modify this file for exercise 2-1
+
 using moodycamel::ReaderWriterQueue;
 
 struct OutputData {

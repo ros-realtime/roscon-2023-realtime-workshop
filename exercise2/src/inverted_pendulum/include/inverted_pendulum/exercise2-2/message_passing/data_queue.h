@@ -8,6 +8,9 @@
 
 using moodycamel::ReaderWriterQueue;
 
+// Exercise 2-2 uses multiple_data.h
+// Do not modify this file for exercise 2-2
+
 struct OutputData {
   struct timespec timestamp;
   double          output_value = 0.0;
