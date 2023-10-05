@@ -7,6 +7,12 @@ ROScon 2023.
 Workshop setup for laptops
 --------------------------
 
+To get the most out of the workshop, please complete the setup instructions for
+your laptop ahead of time. This will take about 10-20 minutes of your time and
+hopefully will make the workshop go significantly smoother. If you run into any
+problems, please [file an issue in this
+repository](https://github.com/ros-realtime/roscon-2023-realtime-workshop/issues).
+
 ### System requirements
 
 The workshop code **only supports Linux**. Officially, we only test **Ubuntu
