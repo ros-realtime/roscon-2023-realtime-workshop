@@ -132,12 +132,12 @@ After logging into the Docker container, you should check everything works:
 After logging into the Docker container:
 
 ```console
-$ cd /code/exercise1 && colcon build && cd ..
-$ cd /code/exercise2 && colcon build && cd ..
-$ cd /code/exercise3-1 && colcon build && cd ..
-$ cd /code/exercise3-2 && colcon build && cd ..
-$ cd /code/exercise4-1 && colcon build && cd ..
-$ cd /code/exercise4-2 && colcon build && cd ..
+$ cd /code/exercise1 && colcon build
+$ cd /code/exercise2 && colcon build
+$ cd /code/exercise3-1 && colcon build
+$ cd /code/exercise3-2 && colcon build
+$ cd /code/exercise4-1 && colcon build
+$ cd /code/exercise4-2 && colcon build
 ```
 
 Make sure these all build. Then make sure at least exercise 1 runs (which takes
