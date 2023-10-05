@@ -21,7 +21,8 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  // TODO: Create executor, add nodes to it, and call spin() on executor
+  // TODO: Create executor, add two nodes to it, and call spin() on executor
+  //       Find example code here: https://docs.ros.org/en/foxy/Concepts/About-Executors.html#basic-use
 
   rclcpp::shutdown();
   StopTracing();
