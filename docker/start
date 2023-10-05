@@ -10,6 +10,10 @@ set -x
 
 docker stop $name
 docker rm -f $name
+while docker container inspect $name >/dev/null 2>&1; do
+  sleep 0.1
+done
+
 docker run \
   -d \
   --device=/dev/dri \
