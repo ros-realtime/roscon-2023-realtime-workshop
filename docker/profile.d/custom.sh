@@ -38,6 +38,6 @@ upload-to-pi() {
     --exclude '*/install/' \
     --exclude 'imgs' \
     ./ \
-    ubuntu@192.168.10.1:/home/ubuntu/repo
+    ubuntu@192.168.10.1:/code
   popd
 }

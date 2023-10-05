@@ -209,7 +209,7 @@ To connect to the Raspberry Pi:
 3. Wait briefly for the Raspberry Pi 4 to boot up and your laptop to connect to the network. This may take a few minutes on first boot.
 4. Once connected, the Raspberry Pi 4 is accessible at the IP address `192.168.10.1`.
 5. You can `ssh ubuntu@192.168.10.1`. The password is **`ubuntu`**.
-6. This repository is located in `~/repo`.
+6. This repository is located in `/code`.
 
 You can also connect to the Raspberry Pi 4's HTTP server which hosts the trace
 viewer, the Docker image, a tarball of the repository. This is available at:

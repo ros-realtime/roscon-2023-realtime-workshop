@@ -68,11 +68,11 @@ systemctl enable chpassword.service
 # So the nginx instance can access the repo
 usermod -a -G ubuntu www-data
 
-cd /home/ubuntu
+cd /
 
-git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git repo
+git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git code
 
-tar cvzf repository.tar.gz repo
+tar cvzf repository.tar.gz code
 mv repository.tar.gz /var/www/html/data
 
 cd repo
@@ -102,5 +102,5 @@ cd exercise4-2
 colcon build
 cd ..
 
-cd ..
-chown -R ubuntu:ubuntu repo
+cd /
+chown -R ubuntu:ubuntu code
