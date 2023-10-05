@@ -69,9 +69,12 @@ The exact version of Docker may be different than the above output.
 1. Download the image file from [the latest release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest). The file is called `docker-image.tar.gz`.
 2. Clone the [roscon-2023-realtime-workshop](https://github.com/ros-realtime/roscon-2023-realtime-workshop) repository with `--recursive` option: `git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-workshop.git`.
 3. `cd` into the `roscon-2023-realtime-workshop` repository.
-4. `docker/import path/to/downloaded/docker-image.tar.gz`.
+4. `docker/fetch ~/Downloads/docker-image.tar.gz`.
 
 This should import the Docker image with a name of `roscon-2023-realtime-workshop`.
+
+Note: do **NOT** use `docker import` or `docker load`. Please use the
+`docker/fetch` script above.
 
 ### Starting the Docker container
 
@@ -165,7 +168,7 @@ The usual rviz2 GUI window should show up if all is well.
 If you like to use VS code for development, you must install the [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack), which enables the dev container system.
 
 This repository contains a [`.devcontainer`](.devcontainer) setup. This setup
-relies on the image imported above using the `docker/import` script. So if you
+relies on the image imported above using the `docker/fetch` script. So if you
 haven't performed the [image import
 step](#getting-the-image-before-the-workshop-highly-recommended), launching VS
 code with dev containers will not work as it will fail to find the image.

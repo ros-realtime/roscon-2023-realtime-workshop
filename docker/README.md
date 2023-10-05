@@ -18,7 +18,7 @@ $ docker/build
 This will build the docker image with a name of `roscon-2023-realtime-workshop`
 and save it into a compressed tarball at `docker/image.tar.gz`.
 
-This image can be imported by attendees via `docker/import`. See the
+This image can be imported by attendees via `docker/fetch`. See the
 [README.md](../README.md) for more details on how to use this image.
 
 TODOS:

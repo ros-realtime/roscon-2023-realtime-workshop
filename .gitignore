@@ -2,4 +2,5 @@ build
 log
 install
 *.perfetto
+docker-image.tar.gz
 image.tar.gz

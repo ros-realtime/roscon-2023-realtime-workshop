@@ -41,6 +41,6 @@ if [ "$?" == "0" ]; then
 else
   echo "Error: failed to start container $name. did you import the image?" >&2
   echo "" >&2
-  echo "Try running docker/import before running this again" >&2
+  echo "Try running docker/fetch before running this again" >&2
   exit 1
 fi
