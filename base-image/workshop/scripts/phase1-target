@@ -14,6 +14,8 @@ apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--fo
   nginx \
   protobuf-compiler \
   python3-colcon-common-extensions \
+  gdb \
+  rsync \
   ros-humble-rmw \
   ros-humble-lifecycle-msgs \
   ros-humble-rclcpp \
@@ -89,6 +91,10 @@ colcon build
 cd ..
 
 cd exercise3-2
+colcon build
+cd ..
+
+cd exercise4-1
 colcon build
 cd ..
 
