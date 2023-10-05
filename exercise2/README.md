@@ -92,21 +92,26 @@ stress-ng -c $(nproc)
 
 In another terminal, let's run the exercise:
 ```bash
-run-exercise2-1.sh
+./run-exercise2-1.sh
 ```
 
 You should see RViz with the pendulum oscillating slowly. The PID controller output will be printed to the terminal every second. Loop overruns will also appear in the logs.
 
 Stop running the program after several seconds. If you do not terminate the program, after 2 minutes, tracing will terminate to keep file sizes low. `stress-ng` can also be stopped at this point.
 
-This will generate a trace file called `exercise2-1.perfetto`. A sample result is included [here](./results/example2-1/baseline.perfetto). In the browser, open [Perfetto](https://cactusdynamics.github.io/perfetto/) to visualize the trace.
+This will generate a trace file called `exercise2-1.perfetto`. A sample result is included [here](./results/example2-1/baseline.perfetto). In the browser, open [Perfetto](http://localhost:3100), and click on `Open trace file` and open the `exercise2-1.perfetto` file.
 
-Look at the timeline and the latency histogram for the `GetDesiredPosition` slice.
+Press `W` to zoom on the timeline until you find the `GetDesiredPosition` slice. Find the largest slice:
 
-![histogram of latency from baseline exercise 2-1 with locks](./imgs/exercise2-1baselinehistogram.png)
 ![timeline slice showing largest latency from baseline exercise 2-1 with locks](./imgs/exercise2-1baselinetimeline.png)
 
-Now, let's try using an atomic instead of a lock. Replace the `double` with a `std::atomic<double>`, and remove the locks. When using an atomic, be sure to check that the atomic is lock free with `static_assert(std::atomic<double>::is_always_lock_free)`.
+Also click on `Latency` on the left side bar to view the latency histogram for the `GetDesiredPosition` slice:
+
+![histogram of latency from baseline exercise 2-1 with locks](./imgs/exercise2-1baselinehistogram.png)
+
+Any slice taking longer than 1ms causes a deadline miss.
+
+To resolve this, let's try using an atomic instead of a lock. Replace the `double` with a `std::atomic<double>`, and remove the locks. When using an atomic, be sure to check that the atomic is lock free with `static_assert(std::atomic<double>::is_always_lock_free)`.
 
 Build your solution, stress, run the exercise again, and examine the new trace. Remember to stop `stress-ng` after stopping the exercise.
 
