@@ -64,6 +64,7 @@ echo "ubuntu:ubuntu" | chpasswd
 usermod -a -G adm,audio,cdrom,dialout,dip,floppy,lxd,netdev,plugdev,sudo,video ubuntu
 
 systemctl enable chpassword.service
+systemctl enable setup-swap.service
 
 # So the nginx instance can access the repo
 usermod -a -G ubuntu www-data
@@ -82,7 +83,15 @@ cd exercise1
 colcon build
 cd ..
 
-cd exercise2
+cd exercise2-1
+colcon build
+cd ..
+
+cd exercise2-2
+colcon build
+cd ..
+
+cd exercise2-3
 colcon build
 cd ..
 

@@ -4,7 +4,7 @@ set -e
 
 cd ..
 
-if [ ! -f docker/image.tar.gz ]; then
+if [ ! -f docker/docker-image.tar.gz ]; then
   docker/build.sh
 else
   echo "WARNING: NOT REBUILDING DOCKER IMAGE"
@@ -20,7 +20,7 @@ set -x
 
 rm -rf base-image/workshop/rootfs/var/www/html/data/
 mkdir base-image/workshop/rootfs/var/www/html/data
-ln docker/image.tar.gz base-image/workshop/rootfs/var/www/html/data/image.tar.gz
+ln docker/docker-image.tar.gz base-image/workshop/rootfs/var/www/html/data/docker-image.tar.gz
 
 rm -rf base-image/workshop/rootfs/var/www/html/perfetto
 cp -ar prebuilts/perfetto base-image/workshop/rootfs/var/www/html/perfetto

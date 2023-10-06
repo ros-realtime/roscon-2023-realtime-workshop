@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup swap
+
+[Service]
+Type=oneshot
+ExecStart=/opt/misc/bin/setup-swap
+
+[Install]
+WantedBy=multi-user.target

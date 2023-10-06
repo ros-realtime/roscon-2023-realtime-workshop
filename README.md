@@ -186,6 +186,8 @@ You also have to build the code for that exercise at least once via `colcon buil
 Workshop setup for the Raspberry Pi 4
 -------------------------------------
 
+If you choose to bring your own Raspberry Pi 4 (4GB+ is recommended, 2GB may be OK).
+
 We are still finalizing whether or not we can bring a limited number of
 Raspberry Pi 4s to the workshop to loan out to people. So if you want to ensure
 you can follow the tutorial on a Raspberry Pi 4, it may be best to bring your

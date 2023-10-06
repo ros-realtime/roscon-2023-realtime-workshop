@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -xe
+
+if [ ! -f /swapfile ]; then
+  touch /swapfile
+  fallocate -l 4G /swapfile
+  chmod 0600 /swapfile
+  mkswap /swapfile
+fi
+
+swapon /swapfile
