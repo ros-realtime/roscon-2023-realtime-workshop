@@ -70,10 +70,10 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
   {
     auto span = tracer_data_logger_->WithSpan("DataLogger");
     
-    // Generate random value between 1000 and 5000
+    // Generate random value between 1000 and 10000
     int random_value = 0;
     for (int i = 0; i < 100; i++) {
-      random_value += (rand() % 40) + 10;
+      random_value += (rand() % 90) + 10;
     }
 
     // Assume it takes 6ms to serialize the data which is all on the CPU
