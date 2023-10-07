@@ -186,12 +186,10 @@ You also have to build the code for that exercise at least once via `colcon buil
 Workshop setup for the Raspberry Pi 4
 -------------------------------------
 
-If you choose to bring your own Raspberry Pi 4 (4GB+ is recommended, 2GB may be OK).
-
-We are still finalizing whether or not we can bring a limited number of
-Raspberry Pi 4s to the workshop to loan out to people. So if you want to ensure
-you can follow the tutorial on a Raspberry Pi 4, it may be best to bring your
-own. We recommend the following hardware:
+We will have a limited number of Raspberry Pi 4s to loan to attendees. We
+expect people to form groups of 3-5 to work on problems together. That said, we
+welcome you to bring your own Raspberry Pi 4s as well. We recommend the
+following hardware:
 
 - A Raspberry Pi 4 (4GB+ is recommended, 2GB may be OK)
 - An Ethernet cable and any necessary USB Ethernet adapters to connect the Raspberry Pi directly to your laptop
@@ -200,19 +198,83 @@ own. We recommend the following hardware:
 
 ### Before the workshop: flashing the image
 
-TBD
+A specially-crafted image designed for the workshop must be flashed to the SD
+card. This image contains an Ubuntu 22.04 installation with ROS 2 humble and a
+real-time kernel which is based on [the Raspberry Pi 4 image maintained by the
+ROS 2 real-time working group](https://github.com/ros-realtime/ros-realtime-rpi4-image).
+It has the code of the exercises builtin and has all of the dependencies
+installed, to ensure the experience can be had entirely offline. It also
+contains a number of helper utilities designed to make it easier for attendees
+for the workshop.
 
-### Connecting to the Raspberry Pi 4
+To download the image, go to the [latest
+release](https://github.com/ros-realtime/roscon-2023-realtime-workshop/releases/latest).
+Download the `roscon2023-rt-workshop-rpi4-ubuntu-22.04.1-ros2-humble.img.zst`.
+This is a [zstd-compressed](https://en.wikipedia.org/wiki/Zstd) file to save
+space. You should be able to double click it and extract the image file.
+Alternatively, you can use the command:
 
-To connect to the Raspberry Pi:
+```
+$ unzstd roscon2023-rt-workshop-rpi4-ubuntu-22.04.1-ros2-humble.img.zst
+```
+
+Locate a microSD card with greater than 16GB of storage and use the [Raspberry
+Pi Imager](https://github.com/raspberrypi/rpi-imager) to flash the resulting
+image file to your microSD card.
+
+#### Directly flashing the image in one command
+
+Alternatively, you can also use the command:
+
+```
+$ unzstd roscon2023-rt-workshop-rpi4-ubuntu-22.04.1-ros2-humble.img.zst --stdout | sudo dd of=/dev/sdX bs=16M conv=fdatasync oflag=direct
+```
+
+Please replace the `/dev/sdX` with the appropriate device.
+
+### Starting and connecting to the Raspberry Pi 4
+
+Start the Raspberry Pi normally. You do not need to attach a monitor or a
+keyboard. To connect to the Raspberry Pi:
 
 1. Connect the Ethernet to the Raspberry Pi 4's only Ethernet port.
-2. Connect the other end of the Ethernet to your laptop. You may have to do this via an USB Ethernet adapter.
+2. Connect the other end of the Ethernet to your laptop. You may have to do this via an USB Ethernet adapter if you do not have an Ethernet port directly on your laptop.
 3. Wait briefly for the Raspberry Pi 4 to boot up and your laptop to connect to the network. This may take a few minutes on first boot.
 4. Once connected, the Raspberry Pi 4 is accessible at the IP address `192.168.10.1`.
 5. You can `ssh ubuntu@192.168.10.1`. The password is **`ubuntu`**.
-6. This repository is located in `/code`.
+6. The code for the exercises is located in the `/code` path.`
 
-You can also connect to the Raspberry Pi 4's HTTP server which hosts the trace
-viewer, the Docker image, a tarball of the repository. This is available at:
-http://192.168.10.1
+### Run the pre-built exercise 1
+
+The image contains not only the source code, but also pre-built binaries for
+all the exercises. This is to reduce the amount of time needed to build during
+the workshop. Please check this is working by running exercise 1:
+
+1. Log in to the Raspberry Pi using the instructions above.
+2. `cd /code/exercise1`
+3. `./run.sh`
+
+You may see warnings about loop overruns. This is expected as part of the
+exercise is to resolve this. 
+
+This program will generate a trace file located at
+`/code/exercise1/exercise1.perfetto`. You can download it via `scp` or use the
+browser as documented below.
+
+### Connect to the Raspberry Pi 4's builtin HTTP server to download files
+
+The image contains a built-in HTTP server where you can browse the `/code`
+directory located on the Pi. This allows you to more easily download trace
+files, which we will do during the workshop. Please check this is working ahead
+of time:
+
+1. With Ethernet connected to the Raspberry Pi, go to
+   http://192.168.10.1/repo/.
+2. Click into `exercise1` and download `exercise1.perfetto` (this will only
+   exists if you ran exercise 1 as instructed in the above section).
+3. Go to http://192.168.10.1/perfetto/
+4. On the top left of the screen, click `Open trace file` and open the
+   `exercise1.perfetto` file you just downloaded.
+5. A timeline view should show up. You can press `W` on your keyboard to zoom
+   in. Press `?` to get help on how to use the interface if you would like to
+   explore further.
