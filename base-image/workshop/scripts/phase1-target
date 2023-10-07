@@ -76,7 +76,7 @@ git clone --recursive https://github.com/ros-realtime/roscon-2023-realtime-works
 tar cvzf repository.tar.gz code
 mv repository.tar.gz /var/www/html/data
 
-cd repo
+cd /code
 source /opt/ros/humble/setup.bash
 
 cd exercise1
