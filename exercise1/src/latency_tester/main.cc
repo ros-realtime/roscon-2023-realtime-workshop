@@ -11,7 +11,7 @@ cactus_rt::CyclicThreadConfig CreateRtThreadConfig(uint32_t index) {
 
   config.SetOtherScheduler();
 
-  // Uncomment he following line to use the real-time scheduler
+  // Uncomment the following line to use the real-time scheduler
   // config.SetFifoScheduler(80);
 
   config.cpu_affinity = {index};

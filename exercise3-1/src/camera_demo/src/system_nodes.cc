@@ -35,7 +35,7 @@ void StartImagePublisherNode() {
   // Has to be an unique pointer as we need to initialize it after rclcpp::init called in main.
   executor = std::make_unique<rclcpp::executors::SingleThreadedExecutor>();
 
-  node = std::make_shared<ImagePublisherNode>(60.0);
+  node = std::make_shared<ImagePublisherNode>(30.0);
   executor->add_node(node);
 
   thr = std::thread([] {

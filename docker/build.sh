@@ -5,6 +5,9 @@ IMAGE_NAME=roscon-2023-realtime-workshop
 
 set -xe
 
+cd $DOCKER_DIR
+chmod 0644 rpi_ssh.conf # Otherwise ssh will freak out. Also Git doesn't record very granular permissions.
+
 cd $DOCKER_DIR/..
 docker build -t $IMAGE_NAME .
 

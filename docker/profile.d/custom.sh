@@ -21,7 +21,15 @@ colcon() {
   # fi
 }
 
+update-pi-time() {
+  sshpass -p ubuntu \
+    ssh -o StrictHostKeyChecking=no \
+    ubuntu@192.168.10.1 \
+    "sudo date -s '$(date)'"
+}
+
 upload-to-pi() {
+  update-pi-time
   pushd /code
   rsync \
     --rsh "/usr/bin/sshpass -p ubuntu ssh -o StrictHostKeyChecking=no -l ubuntu" \
