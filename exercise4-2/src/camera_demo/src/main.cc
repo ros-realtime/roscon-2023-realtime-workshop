@@ -5,19 +5,6 @@
 #include "tracing.h"
 
 int main(int argc, char** argv) {
-
-  // Set real-time priority for all middleware threads
-  // (assignment of scheduling priority to main thread is before `rclcpp::init()`)
-  // ... which also runs the executor in this main thread with the real-time priority. (see below)
-  // TODO
-  // reduce then the priority of best-effort thread below
-  //  sched_param sch;
-  // sch.sched_priority = 50;
-  // if (sched_setscheduler(0, SCHED_FIFO, &sch) == -1) {
-  //   perror("sched_setscheduler failed");
-  //  exit(-1);
-  // }
-
   // initialization of ROS and DDS middleware
   rclcpp::init(argc, argv);
 
