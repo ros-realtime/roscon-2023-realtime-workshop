@@ -133,7 +133,8 @@ After logging into the Docker container:
 
 ```console
 $ cd /code/exercise1 && colcon build
-$ cd /code/exercise2 && colcon build
+$ cd /code/exercise2-1 && colcon build
+$ cd /code/exercise2-2 && colcon build
 $ cd /code/exercise3-1 && colcon build
 $ cd /code/exercise3-2 && colcon build
 $ cd /code/exercise4-1 && colcon build
@@ -218,9 +219,9 @@ Alternatively, you can use the command:
 $ unzstd roscon2023-rt-workshop-rpi4-ubuntu-22.04.1-ros2-humble.img.zst
 ```
 
-Locate a microSD card with greater than 16GB of storage and use the [Raspberry
-Pi Imager](https://github.com/raspberrypi/rpi-imager) to flash the resulting
-image file to your microSD card.
+Locate a microSD card with greater than 16GB of storage and use
+[Etcher](https://etcher.balena.io/) to flash the resulting image file to your
+microSD card.
 
 #### Directly flashing the image in one command
 
