@@ -34,7 +34,7 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
     // Pretend it takes 3 ms to do object detection.
-    WasteTime(std::chrono::microseconds(1950));
+    WasteTime(std::chrono::microseconds(3000));
 
     // Send a signal to the downstream actuation node
     std_msgs::msg::Int64 msg;
@@ -53,8 +53,8 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
     
     // Generate random value between 1000 and 10000
     int random_value = 0;
-    for (int i = 0; i < 100; i++) {
-      random_value += (rand() % 89) + 10;
+    for (int i = 0; i < 10; i++) {
+      random_value += (rand() % 900) + 100;
     }
 
     // Assume it takes 6ms to serialize the data which is all on the CPU
