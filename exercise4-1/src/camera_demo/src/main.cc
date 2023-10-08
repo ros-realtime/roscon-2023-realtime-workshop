@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
 
   auto camera_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("camera");
-  auto camera_node = std::make_shared<ImagePublisherNode>(camera_tracer, 60.0);
+  auto camera_node = std::make_shared<ImagePublisherNode>(camera_tracer, 30.0);
 
   auto actuation_tracer = std::make_shared<cactus_rt::tracing::ThreadTracer>("actuation");
   auto actuation_node = std::make_shared<ActuationNode>(actuation_tracer);
