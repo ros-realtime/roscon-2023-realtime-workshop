@@ -46,7 +46,7 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
   {
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
-    // Pretend it takes 4000 ms to do object detection.
+    // Pretend it takes 3ms to do object detection.
     WasteTime(std::chrono::microseconds(3000));
 
     // Send a signal to the downstream actuation node
