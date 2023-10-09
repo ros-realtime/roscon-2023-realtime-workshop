@@ -62,6 +62,19 @@ RUN set -xe; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*;
 
+COPY exercise3-2 /opt/code/exercise3-2
+COPY vendor /opt/code/vendor
+
+RUN set -xe; \
+    cp -ar /opt/code /code; \
+    cd /code/exercise3-2; \
+    . /opt/ros/humble/setup.sh; \
+    colcon build; \
+    tar czf exercise3-2-build-output.tar.gz build install; \
+    cp exercise3-2-build-output.tar.gz /opt; \
+    cd /; \
+    rm -rf /code
+
 COPY docker/bin /opt/bin
 COPY docker/profile.d/custom.sh /etc/profile.d/custom.sh
 COPY docker/rpi_ssh.conf /etc/ssh/ssh_config.d/rpi_ssh.conf
