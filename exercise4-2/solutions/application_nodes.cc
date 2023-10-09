@@ -16,17 +16,29 @@ CameraProcessingNode::CameraProcessingNode(
   std::shared_ptr<ThreadTracer> tracer_object_detector,
   std::shared_ptr<ThreadTracer> tracer_data_logger
 ) : Node("obj_detect"), tracer_object_detector_(tracer_object_detector), tracer_data_logger_(tracer_data_logger) {
-  
+  realtime_group_ = this->create_callback_group(
+    rclcpp::CallbackGroupType::MutuallyExclusive
+  );
+  besteffort_group_ = this->create_callback_group(
+    rclcpp::CallbackGroupType::MutuallyExclusive
+  );
+
+  rclcpp::SubscriptionOptions data_logging_options;
+  data_logging_options.callback_group = besteffort_group_;
   subscription_data_logger_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::DataLoggerCallback, this, std::placeholders::_1),
+    data_logging_options
   );
 
+  rclcpp::SubscriptionOptions obj_det_options;
+  obj_det_options.callback_group = realtime_group_;
   subscription_object_detector_ = this->create_subscription<FakeImage>(
     "/image",
     10,
-    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1)
+    std::bind(&CameraProcessingNode::ObjectDetectorCallback, this, std::placeholders::_1),
+    obj_det_options
   );
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
@@ -43,6 +55,7 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
 
   {
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
+
     WasteTime(std::chrono::microseconds(3000));
 
     // Send a signal to the downstream actuation node
@@ -61,7 +74,7 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
   {
     auto span = tracer_data_logger_->WithSpan("DataLogger");
 
-    // variable duration to serialize the data between [5ms,10ms]
+    // variable duration to serialize the data between [5ms,10ms]  
     unsigned int data_logger_latency = 5000 + (rand() % 5001);
     WasteTime(std::chrono::microseconds(data_logger_latency));
 
