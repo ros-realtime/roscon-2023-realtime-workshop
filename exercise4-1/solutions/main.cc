@@ -25,33 +25,34 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(data_logger_tracer);
 
   rclcpp::executors::SingleThreadedExecutor executor;
-  // Exercise 4-1 : comment next line
-  // executor.add_node(camera_node);
+
+  // Exercise 4-1 (1): comment next line
+
 
   executor.add_node(camera_processing_node);
   executor.add_node(actuation_node);
 
-  // Exercise 4-1 - begin - uncomment next paragraph
+  // Exercise 4-1 (2)
   rclcpp::executors::SingleThreadedExecutor image_pub_executor;
   image_pub_executor.add_node(camera_node);
+
   std::thread thr;
+  // Exercise 4-1: (3) (4): uncomment next section, set priority and call spin()
   thr = std::thread([&image_pub_executor] {
     sched_param sch;
     sch.sched_priority = 90;
     if (sched_setscheduler(0, SCHED_FIFO, &sch) == -1) {
       throw std::runtime_error{std::string("failed to set scheduler: ") + std::strerror(errno)};
     }
-
     image_pub_executor.spin();
   });
-  // Exercise 4-1 - end
+
 
   executor.spin();
-
   rclcpp::shutdown();
   StopTracing();
 
-  // Exercise 4-1 - uncomment next line
+  // Exercise 4-1 (5): join the thread (uncomment next line)
   thr.join();
 
   return 0;

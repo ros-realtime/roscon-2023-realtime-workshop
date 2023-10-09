@@ -51,12 +51,8 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
 void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) {
   auto span = tracer_data_logger_->WithSpan("DataLogger");
 
-  // Assume it takes 6ms to serialize the data which is all on the CPU
-  // random number between [6ms,15ms]
-  // 15 ms + 3ms (objectDetector) = 18 ms > publisher rate (16.7ms)
-
-  unsigned int data_logger_latency = 6000 + (rand() % 9001);
-  // std::cout << "latency " << data_logger_latency << std::endl;
+  // variable duration to serialize the data between [20ms,35ms]
+  unsigned int data_logger_latency = 20000 + (rand() % 15001);
   WasteTime(std::chrono::microseconds(data_logger_latency));
 
   // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
