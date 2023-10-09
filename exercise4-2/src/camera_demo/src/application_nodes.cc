@@ -1,5 +1,5 @@
 #include "application_nodes.h"
-
+#include <cstdlib>
 #include <chrono>
 #include <list>
 #include <memory>
@@ -42,6 +42,9 @@ CameraProcessingNode::CameraProcessingNode(
   );
 
   publisher_ = this->create_publisher<std_msgs::msg::Int64>("/actuation", 10);
+
+  // initialization of latency random variable
+  srand((unsigned)time(NULL));
 }
 
 void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr image) {
@@ -53,7 +56,8 @@ void CameraProcessingNode::ObjectDetectorCallback(const FakeImage::SharedPtr ima
   {
     auto span = tracer_object_detector_->WithSpan("ObjectDetect");
 
-    // Pretend it takes 3ms to do object detection.
+    // variable duration to serialize the data between [20ms,35ms]
+    unsigned int data_logger_latency = 20000 + (rand() % 15001);
     WasteTime(std::chrono::microseconds(3000));
 
     // Send a signal to the downstream actuation node
