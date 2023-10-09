@@ -70,8 +70,14 @@ void CameraProcessingNode::DataLoggerCallback(const FakeImage::SharedPtr image) 
   {
     auto span = tracer_data_logger_->WithSpan("DataLogger");
 
+    // Generate random value between 1000 and 10000
+    int random_value = 0;
+    for (int i = 0; i < 10; i++) {
+      random_value += (rand() % 900) + 100;
+    }
+
     // Assume it takes 6ms to serialize the data which is all on the CPU
-    WasteTime(std::chrono::microseconds(6000));
+    WasteTime(std::chrono::microseconds(random_value));
 
     // Assume it takes about 1ms to write the data where it is blocking but yielded to the CPU.
     std::this_thread::sleep_for(std::chrono::microseconds(1000));

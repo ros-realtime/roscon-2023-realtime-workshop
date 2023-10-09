@@ -22,7 +22,8 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  // TODO: Copy your solution from Exercise 3-1, but use MultiThreadedExecutor instead of SingleThreadedExecutor
+  // TODO: Copy your solution from Exercise 3-1, but use
+  //       MultiThreadedExecutor instead of SingleThreadedExecutor
 
   rclcpp::shutdown();
   StopTracing();
