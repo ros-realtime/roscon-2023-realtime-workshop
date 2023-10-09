@@ -24,15 +24,30 @@ int main(int argc, char** argv) {
   RegisterThreadTracer(object_detector_tracer);
   RegisterThreadTracer(data_logger_tracer);
 
-  rclcpp::executors::SingleThreadedExecutor executor;
+  rclcpp::executors::SingleThreadedExecutor real_time_executor;
+  rclcpp::executors::SingleThreadedExecutor best_effort_executor;
 
-  executor.add_node(camera_processing_node);
-  executor.add_node(actuation_node);
-  executor.spin();
+  best_effort_executor.add_callback_group(data_logger_group, camera_processing_node->get_node_base_interface());
+  real_time_executor.add_callback_group(object_detector_group, camera_processing_node->get_node_base_interface());
+  real_time_executor.add_node(actuation_node);
 
+  // Launch real-time Executor in a thread
+  std::thread real_time_thread([&real_time_executor]() {
+    sched_param sch;
+    sch.sched_priority = 60;
+    if (sched_setscheduler(0, SCHED_FIFO, &sch) == -1) {
+      perror("sched_setscheduler failed");
+      exit(-1);
+    }
+    real_time_executor.spin();
+  });
+
+  best_effort_executor.spin();
+  
   rclcpp::shutdown();
   StopTracing();
 
   JoinImagePublisherNode();
+  real_time_thread.join();
   return 0;
 }
