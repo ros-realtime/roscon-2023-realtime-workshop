@@ -25,7 +25,7 @@ struct MultipleData {
  private:
   // Exercise 2-2: Change this mutex to a priority inheritance mutex
   // A priority inheritance mutex implementation is available as cactus_rt::mutex
-  using mutex = cactus_rt::mutex;
+  using mutex = std::mutex;
   mutex pid_constant_mutex_;
 
   PIDConstants pid_constants_;
