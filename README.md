@@ -171,10 +171,10 @@ If you like to use VS code for development, you must install the [Remote Develop
 This repository contains a [`.devcontainer`](.devcontainer) setup. This setup
 relies on the image imported above using the `docker/fetch` script. So if you
 haven't performed the [image import
-step](#getting-the-image-before-the-workshop-highly-recommended), launching VS
+step](#getting-the-image-before-the-workshop), launching VS
 code with dev containers will not work as it will fail to find the image.
 
-Once you [imported the image](#getting-the-image-before-the-workshop-highly-recommended), you can simply open VS code with dev containers in this repository. You can use the VS code terminal or use the `.devcontainer/shell` script to login to the container. All above features should work and you should check.
+Once you [imported the image](#getting-the-image-before-the-workshop), you can simply open VS code with dev containers in this repository. You can use the VS code terminal or use the `.devcontainer/shell` script to login to the container. All above features should work and you should check.
 
 **Getting IntelliSense to work**
 
