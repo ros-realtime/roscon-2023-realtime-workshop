@@ -6,13 +6,20 @@ cd $DOCKER_DIR/..
 
 name=roscon-2023-realtime-workshop
 
-set -x
+if [ "$(id -u)" == 0 ]; then
+  echo "ERROR: you are running this as root. This doesn't work with this container. Please run this script without root." >&2
+  echo "If you can't use Docker without root, follow the instructions here: " >&2
+  echo "https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user" >&2
+  exit 1
+fi
 
 docker stop $name
 docker rm -f $name
 while docker container inspect $name >/dev/null 2>&1; do
   sleep 0.1
 done
+
+set -x
 
 docker run \
   -d \
