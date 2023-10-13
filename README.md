@@ -62,6 +62,8 @@ Server: Docker Engine - Community
 
 The exact version of Docker may be different than the above output.
 
+You must also install Docker such that you can manage docker without root. [See the instruction here for details](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user).
+
 [docker-install]: https://docs.docker.com/engine/install/ubuntu/
 
 ### Getting the image BEFORE the workshop
