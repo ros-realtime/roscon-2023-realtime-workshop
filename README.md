@@ -138,7 +138,7 @@ $ cd /code/exercise1 && colcon build
 $ cd /code/exercise2-1 && colcon build
 $ cd /code/exercise2-2 && colcon build
 $ cd /code/exercise3-1 && colcon build
-$ cd /code/exercise3-2 && colcon build
+$ cd /code/exercise3-2 && ./build.sh
 $ cd /code/exercise4-1 && colcon build
 $ cd /code/exercise4-2 && colcon build
 ```
