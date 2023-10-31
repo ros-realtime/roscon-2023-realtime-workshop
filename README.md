@@ -4,7 +4,7 @@ Real-time programming with ROS 2
 This is the repository for the `Real-time programming with ROS 2` workshop for
 ROScon 2023.
 
-**Thank you to [Shuhao Wu](https://github.com/shuhaowu), https://github.com/janstaschulat[Jan Staschlat](https://github.com/janstaschulat), [Stephanie Eng](https://github.com/stephanie-eng) and [Oren Bell](https://github.com/nightduck) for putting together the excellent workshop. [Slides available here](https://docs.google.com/presentation/d/1yHaHiukJe-87RhiN8WIkncY23HxFkJynCQ8j3dIFx_w/edit#slide=id.p). Thank you all for attending!**
+**Thank you to [Shuhao Wu](https://github.com/shuhaowu), [Jan Staschlat](https://github.com/janstaschulat), [Stephanie Eng](https://github.com/stephanie-eng) and [Oren Bell](https://github.com/nightduck) for putting together the excellent workshop. [Slides available here](https://docs.google.com/presentation/d/1yHaHiukJe-87RhiN8WIkncY23HxFkJynCQ8j3dIFx_w/edit#slide=id.p). Thank you all for attending!**
 
 Workshop setup for laptops
 --------------------------
